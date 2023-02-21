@@ -1,28 +1,18 @@
 {
-  "name": "hexo-site",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "build": "hexo generate",
-    "clean": "hexo clean",
-    "deploy": "hexo deploy",
-    "server": "hexo server"
-  },
-  "hexo": {
-    "version": "6.3.0"
-  },
-  "dependencies": {
-    "hexo": "^6.3.0",
-    "hexo-generator-archive": "^2.0.0",
-    "hexo-generator-baidu-sitemap": "^0.1.9",
-    "hexo-generator-category": "^2.0.0",
-    "hexo-generator-index": "^3.0.0",
-    "hexo-generator-sitemap": "^3.0.1",
-    "hexo-generator-tag": "^2.0.0",
-    "hexo-renderer-ejs": "^2.0.0",
-    "hexo-renderer-marked": "^6.0.0",
-    "hexo-renderer-stylus": "^2.1.0",
-    "hexo-server": "^3.0.0",
-    "hexo-theme-aurora": "^1.5.5"
-  }
+    "name": "site",
+    "version": "1.0.0",
+    "scripts": {
+        "docs:dev": "vitepress dev docs",
+        "docs:build": "vitepress build docs",
+        "docs:preview": "vitepress preview docs"
+    },
+    "author": "groveer",
+    "private": true,
+    "devDependencies": {
+        "@mermaid-js/mermaid-mindmap": "^9.3.0",
+        "mermaid": "^8.4.0",
+        "vitepress": "^1.0.0-alpha.47",
+        "vitepress-plugin-mermaid": "^2.0.10",
+        "vue": "^3.2.47"
+    }
 }
