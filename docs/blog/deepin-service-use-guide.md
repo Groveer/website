@@ -19,15 +19,71 @@ feature: false
 
 - 插件服务，把服务以一个插件方式加载运行
 - dbus 接口私有化（接口隐藏、接口白名单）
-- dbus 插件服务的按需启动
+- dbus 服务的按需启动
 - 独立应用的 dbus 接口私有化 sdk
 
-### 服务加载插件流程
+### 加载流程
+
+#### 常驻服务插件加载流程
+
+```mermaid
+graph LR
+A([systemd]) --> B(service-manager)
+B --> C(read json)
+C --> D(start group unit)
+D --> E(group1 process)
+D --> F(group2 process)
+D --> G(groupN process)
+E --> H(load group1 plugins)
+F --> I(load group2 plugins)
+G --> J(load groupN plugins)
+H --> K([end])
+I --> K
+J --> K
+```
 
 1. 如图所示，deepin-service-manager 由 systemd 服务拉起来；
 2. service 起来后读取所有的 json 配置文件，根据配置文件进行分组；
 3. 按照分好的组通过 systemd 启动子进程实例，并传入组名；
 4. 子进程启动，按照传入的组名进行过滤，注册该组的服务，并且根据配置文件（Resident、OnDemand）决定是否立即加载 so 插件。
+
+#### 权限管理流程
+
+```mermaid
+graph LR
+A([process]) --> B(read json)
+B --> C(register dbus)
+C --> D(hook dbus)
+D --> E{config policy?}
+E -->|yes| F(do nothing)
+E -->|no| G("call real dbus")
+F --> H([end])
+G --> H
+```
+
+1. 进程起来后会到特定目录读取 json 配置
+2. 注册 dbus 服务时，会对 dbus 进行 hook 操作
+3. 当 dbus 接口被调用时，hook 方法会进行拦截，此时根据配置文件中的 policy 配置决定是否继续调用真正的接口
+
+#### 独立应用开发流程
+
+```mermaid
+graph LR
+A([QDBusService]) --> B(read json)
+B --> D(hook dbus)
+D --> E{is Resident?}
+E -->|yes| F("call real dbus")
+E -->|no| G(start timer)
+G --> F
+G --> H(timeout)
+H --> J(quit app)
+J --> K([end])
+F --> K
+```
+
+1. 独立应用需继承 QDBusService 类
+2. 初始化时需指定 json 配置文件，QDBusService 会进行 hook dbus操作
+3. 当配置中指定了按需启动，则启动定时器，超时即退出进程
 
 ### 普通插件开发
 
@@ -43,35 +99,30 @@ feature: false
   "policyStartType": "Resident", // [可选]启动方式，Resident（常驻）、OnDemand（按需启动）。默认Resident。
   "dependencies": [], // [可选]若依赖其他服务，可将服务名填在此处，在依赖启动之前不会启动此服务
   "startDelay": 0, // [可选]若需要延时启动，可将延时时间填在此处，单位为秒
-  "idleTime": 10 // [可选]若服务是按需启动，则可以设置闲时时间，超时则会卸载服务
 }
 ```
 
->配置文件中必选字段为必须要填写字段，否则插件无法正常启动，可选字段可视情况选择填写即可！
+:::tip 提示
+配置文件中必选字段为必须要填写字段，否则插件无法正常启动，可选字段可视情况选择填写即可！
+:::
+
+:::warning 警告
+插件并不会闲时退出，在插件配置中，`policyStartType`只影响该插件是否在服务启动时立即加载，并不会进行退出操作。若要实现闲时退出功能，需使用`SDK`方式编写服务，参考[这里](#独立应用开发)。
+:::
 
 配置文件安装路径规则：
 
-1. qdbus/sdbus
+**system**:
 
-    **system**:
+```shell
+/usr/share/deepin-service-manager/system/demo.json
+```
 
-    ```shell
-    /usr/share/deepin-service-manager/system/demo.json
-    ```
+**session**:
 
-    **session**:
-
-    ```shell
-    /usr/share/deepin-service-manager/user/demo.json
-    ```
-
-2. sdk
-
-    目前只实现了 Qt 的 SDK 实现方式：
-
-    ```shell
-    /usr/share/deepin-service-manager/other/demo.json
-    ```
+```shell
+/usr/share/deepin-service-manager/user/demo.json
+```
 
 #### 实现入口函数
 
@@ -141,13 +192,15 @@ feature: false
     }
     ```
 
-**实现的 so 安装路径为 `/usr/lib/deepin-service-manager/`**
+**实现的 so 安装路径为 `${CMAKE_INSTALL_LIBDIR}/deepin-service-manager/`**
 
-> 注意：不同平台的 lib 路径可能不一样，推荐使用[GNUInstallDirs](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html?highlight=gnuinstalldirs)
+:::tip 提示
+不同平台的 lib 路径可能不一样，推荐使用[GNUInstallDirs](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html?highlight=gnuinstalldirs)
+:::
 
 ### 带权限的插件开发
 
-配置文件增加权限规则即可。
+配置文件增加权限规则即可。配置文件安装路径和入口函数与普通插件保持一致。
 
 ```json
 {
@@ -212,40 +265,20 @@ feature: false
 }
 ```
 
-### 独立应用开发
-
-1. 提供配置文件，配置规则同上。
-2. 加载 libqdbus-service.so
-3. dbus object 继承 QDBusService，且调用 QDBusService::InitPolicy。
-
-```c++
-#include "qdbusservice.h"
-#include <QDBusContext>
-class Service : public QDBusService,
-                protected QDBusContext
-{
-    Q_OBJECT
-public:
-    explicit Service(QObject *parent = 0) {
-        QDBusService::InitPolicy(QDBusConnection::SessionBus, "other/demo.json");
-    }
-}
-```
-
-## 查看插件是否生效
+### 查看插件是否生效
 
 将 .so 和 .json 文件放到指定位置后，执行命令：
 
 1. system
 
     ```bash
-    sudo systemctl restart deepin-service-manager@system.service
+    sudo systemctl restart deepin-service-manager.service
     ```
 
 2. session
 
     ```bash
-    systemctl --user restart deepin-service-manager@user.service
+    systemctl --user restart deepin-service-manager.service
     ```
 
 重启服务后，即可通过 DBus 命令行或 d-feet 工具查看 json 中的 DBus 服务已被启动，服务名即 json 中的`name`字段配置的内容。
@@ -255,25 +288,82 @@ public:
 - `/manager`路径下可查看当前服务中已启动的所有分组进程
 - `/group/<group name>`路径下可查看当前分组中加载的所有插件
 
+### 独立应用开发
+
+#### 提供配置文件
+
+```json
+{
+  "name": "org.deepin.service.demo", // [必选]dbus name，框架中会注册该name
+  "policyVersion": "1.0", // [可选]配置文件版本，预留配置，无实际用途
+  "policyStartType": "Resident", // [可选]启动方式，Resident（常驻）、OnDemand（按需启动），默认Resident。若设置 OnDaemand，则需要设置 idleTime 字段！
+  "idleTime": 10 // [可选]若服务是按需启动，则可以设置闲时时间，超时则会退出当前进程
+}
+```
+
+:::tip 提示
+独立应用的配置文件与插件的配置文件很多地方不一样，插件中的很多配置，在独立应用中是不生效的！
+:::
+
+配置文件安装路径规则：
+
+```shell
+/usr/share/deepin-service-manager/other/demo.json
+```
+
+#### 主要实现
+
+```cpp
+#include "qdbusservice.h"
+#include <QDBusContext>
+class Service : public QDBusService,
+                protected QDBusContext
+{
+    Q_OBJECT
+public:
+    explicit Service(QObject *parent = 0) {
+        QDBusService::InitPolicy(QDBusConnection::SessionBus, "json path");
+    }
+}
+```
+
+:::tip 提示
+独立应用若需要按需启动，需要安装 DBus service文件，参考[demo](#附件列表)
+:::
+
 ### 注意事项
 
 #### 服务分类
 
 在该服务中，分为主服务与分组服务，主服务启动，会根据配置文件，自动启动分组服务，举个例子：
 
-现有一个插件，json 配置中，`group`字段配置为`app`，那么该插件就属于`app`组，
-
-为方便调试，该服务有`Debug`版本和`Release`版本
-在 Debug 版本中，分组服务以子进程的方式进行启动，所以以该命令可重启所有服务：
+现有一个插件，json 配置中，`group`字段配置为`app`，那么该插件就属于`app`组，主服务启动时会自动按组名启动插件服务，插件服务的名称为：
 
 ```bash
-sudo systemctl restart deepin-service-manager@system.service
+deepin-service-plugin@app.service
 ```
 
-在 Release 版本中，分组服务与主服务
+所以在调试时，只需启动插件服务即可：
+
+```bash
+sudo systemctl restart deepin-service-plugin@app.service
+```
+
+## 附件列表
+
+| [qt 普通插件 demo](/rc/plugin-qdbus-demo1.tar.gz)   |
+|---------------------------------------------------|
+| [qt 带权限插件 demo](/rc/plugin-qdbus-demo2.tar.gz) |
+| [sd 带权限插件 demo](/rc/plugin-sdbus-demo1.tar.gz) |
+| [独立应用 demo](rc/libqdbusservice-demo.tar.gz)    |
 
 ## 更新日志
 
+- 2023/02/22:
+  - 新增权限管控流程和独立应用开发流程
+  - 新增注意事项，调试技巧可参考注意事项
+  - 新增附件列表，实现了常见场景的 demo
+  - 优化整体页面说明，分为普通插件开发、带权限管控的插件开发、独立应用开发
 - 2023/02/08:
   - 新增依赖配置，配置依赖服务后，在依赖未启动时不会启动本服务
   - 新增延时启动，可配置本服务延时启动
