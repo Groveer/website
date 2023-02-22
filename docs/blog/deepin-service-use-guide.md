@@ -13,7 +13,7 @@ feature: false
 
 本篇文章将介绍 Deepin 后端服务框架如何使用，主要实现两个部分：一个接口，一个配置。
 
-## 概述和用法
+## 功能和流程
 
 ### 核心功能
 
@@ -85,9 +85,9 @@ F --> K
 2. 初始化时需指定 json 配置文件，QDBusService 会进行 hook dbus操作
 3. 当配置中指定了按需启动，则启动定时器，超时即退出进程
 
-### 普通插件开发
+## 插件开发
 
-#### 提供配置文件
+### 提供配置文件
 
 ```json
 {
@@ -124,7 +124,7 @@ F --> K
 /usr/share/deepin-service-manager/user/demo.json
 ```
 
-#### 实现入口函数
+### 实现入口函数
 
 1. qdbus
 
@@ -198,21 +198,55 @@ F --> K
 不同平台的 lib 路径可能不一样，推荐使用[GNUInstallDirs](https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html?highlight=gnuinstalldirs)
 :::
 
-### 带权限的插件开发
+## 独立应用开发
 
-配置文件增加权限规则即可。配置文件安装路径和入口函数与普通插件保持一致。
+### 提供配置文件
 
 ```json
 {
-  "name": "org.deepin.services.demo",
-  "libPath": "demo.so",
-  "group": "core", // 可选，默认core。
-  "pluginType": "qt", // 可选
-  "policyVersion": "1.0", // 可选，配置文件版本，预留配置，无实际用途
-  "policyStartType": "Resident", // 启动方式，Resident（常驻）、OnDemand（按需启动）。可选，默认Resident。
-  "dependencies": [], // [可选]若依赖其他服务，可将服务名填在此处，在依赖启动之前不会启动此服务
-  "startDelay": 0, // [可选]若需要延时启动，可将延时时间填在此处，单位为秒
+  "name": "org.deepin.service.demo", // [必选]dbus name，框架中会注册该name
+  "policyVersion": "1.0", // [可选]配置文件版本，预留配置，无实际用途
+  "policyStartType": "Resident", // [可选]启动方式，Resident（常驻）、OnDemand（按需启动），默认Resident。若设置 OnDaemand，则需要设置 idleTime 字段！
+  "idleTime": 10 // [可选]若服务是按需启动，则可以设置闲时时间，超时则会退出当前进程
+}
+```
 
+:::tip 提示
+独立应用的配置文件与插件的配置文件很多地方不一样，插件中的很多配置，在独立应用中是不生效的！
+:::
+
+配置文件安装路径规则：
+
+```shell
+/usr/share/deepin-service-manager/other/demo.json
+```
+
+### 主要实现
+
+```cpp
+#include "qdbusservice.h"
+#include <QDBusContext>
+class Service : public QDBusService,
+                protected QDBusContext
+{
+    Q_OBJECT
+public:
+    explicit Service(QObject *parent = 0) {
+        QDBusService::InitPolicy(QDBusConnection::SessionBus, "json path");
+    }
+}
+```
+
+:::tip 提示
+独立应用若需要按需启动，需要安装 DBus service文件，参考[demo](#附件列表)
+:::
+
+## 给插件或应用加上权限
+
+在原来的配置文件增加权限规则即可。
+
+```json
+{
   "whitelists": [
     // 白名单规则，给下面 policy 做权限规则配置，单独存在无意义
     {
@@ -265,7 +299,9 @@ F --> K
 }
 ```
 
-### 查看插件是否生效
+>在原来的配置基础上，加上上面的配置即可加上权限管控功能！
+
+## 查看插件是否生效
 
 将 .so 和 .json 文件放到指定位置后，执行命令：
 
@@ -288,52 +324,7 @@ F --> K
 - `/manager`路径下可查看当前服务中已启动的所有分组进程
 - `/group/<group name>`路径下可查看当前分组中加载的所有插件
 
-### 独立应用开发
-
-#### 提供配置文件
-
-```json
-{
-  "name": "org.deepin.service.demo", // [必选]dbus name，框架中会注册该name
-  "policyVersion": "1.0", // [可选]配置文件版本，预留配置，无实际用途
-  "policyStartType": "Resident", // [可选]启动方式，Resident（常驻）、OnDemand（按需启动），默认Resident。若设置 OnDaemand，则需要设置 idleTime 字段！
-  "idleTime": 10 // [可选]若服务是按需启动，则可以设置闲时时间，超时则会退出当前进程
-}
-```
-
-:::tip 提示
-独立应用的配置文件与插件的配置文件很多地方不一样，插件中的很多配置，在独立应用中是不生效的！
-:::
-
-配置文件安装路径规则：
-
-```shell
-/usr/share/deepin-service-manager/other/demo.json
-```
-
-#### 主要实现
-
-```cpp
-#include "qdbusservice.h"
-#include <QDBusContext>
-class Service : public QDBusService,
-                protected QDBusContext
-{
-    Q_OBJECT
-public:
-    explicit Service(QObject *parent = 0) {
-        QDBusService::InitPolicy(QDBusConnection::SessionBus, "json path");
-    }
-}
-```
-
-:::tip 提示
-独立应用若需要按需启动，需要安装 DBus service文件，参考[demo](#附件列表)
-:::
-
-### 注意事项
-
-#### 服务分类
+## 注意事项
 
 在该服务中，分为主服务与分组服务，主服务启动，会根据配置文件，自动启动分组服务，举个例子：
 
