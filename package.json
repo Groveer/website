@@ -10,7 +10,7 @@
     "private": true,
     "devDependencies": {
         "@mermaid-js/mermaid-mindmap": "^9.3.0",
-        "mermaid": "^8.4.0",
+        "mermaid": "^8.14.0",
         "vitepress": "^1.0.0-alpha.47",
         "vitepress-plugin-mermaid": "^2.0.10",
         "vue": "^3.2.47"
