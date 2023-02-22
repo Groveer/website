@@ -40,6 +40,12 @@ defineConfig({
       message: "博客内容遵循 CC BY-NC-SA 4.0 协议。",
       copyright: "Copyright © 2022-至今 易上止正",
     },
+
+    algolia: {
+      appId: 'GV7KKP6C12',
+      apiKey: '30f9e55bc540ba45254b012c4abffaae',
+      indexName: 'groveer'
+    }
   },
 })
 )
