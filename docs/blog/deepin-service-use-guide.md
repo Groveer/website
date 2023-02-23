@@ -223,23 +223,119 @@ F --> K
 
 ### 主要实现
 
-```cpp
-#include "qdbusservice.h"
-#include <QDBusContext>
-class Service : public QDBusService,
-                protected QDBusContext
-{
-    Q_OBJECT
-public:
-    explicit Service(QObject *parent = 0) {
-        QDBusService::InitPolicy(QDBusConnection::SessionBus, "json path");
+:::info QDBusService
+该类实现了 dbus 权限管控和闲时退出功能，使用该类非常自由：
+
+    - 可以继承该类
+    - 可以单独创建该类实例
+
+1. DBus Interface 类继承该类：
+
+    ```cpp
+    class ServiceInterface : public QDBusService
+    {
+        Q_OBJECT
+        Q_CLASSINFO("D-Bus Interface", ServiceInterfaceStr);
+
+    public:
+        explicit ServiceInterface(QObject *parent = nullptr);
+        void init(const QDBusConnection::BusType &type) {
+            initPolicy(type, QString(SERVICE_CONFIG_DIR) + "other/demo.json");
+        }
+    };
+
+    ```
+
+    然后直接创建该类实例，并用该类进行 DBus 注册即可，如：
+
+    ```cpp
+    if (!connection.registerObject(ServiceInterfacePath,
+                                   serviceInterfaceInstance,
+                                   QDBusConnection::ExportScriptableContents
+                                           | QDBusConnection::ExportAllProperties)) {
+        qWarning() << "[ServiceManager]failed to register dbus object: "
+                   << connection.lastError().message();
     }
-}
-```
+    ```
+
+2. 使用 DBus Adaptor 方式进行注册：
+
+    ```cpp
+    class Service : public QDBusService, protected QDBusContext
+    {
+        Q_OBJECT
+    public:
+        explicit Service(QObject *parent = nullptr) {
+                initPolicy(QDBusConnection::SessionBus,
+                    QString(SERVICE_CONFIG_DIR) + "other/demo.json");
+        }
+
+        Q_PROPERTY(QString msg READ Msg WRITE SetMsg NOTIFY MsgChanged)
+        QString Msg();
+        void SetMsg(QString value);
+
+    Q_SIGNALS:
+        // xml - signal
+        void MsgChanged(const QString &msg);
+
+    public Q_SLOTS:
+        // xml - method
+        QString Hello();
+
+    private:
+        QString m_msg;
+    };
+
+    ```
+
+    然后使用 adaptor 进行注册：
+
+    ```cpp
+    Service s;
+    DemoAdaptor adp(&s);
+    // 从QDBusService对象拿到 QDBusConnection 防止注册对象不一致，导致无法正常管理权限
+    QDBusConnection connection = s.qDbusConnection();
+    if (!connection.registerObject("/org/deepin/service/demo", &s)) {
+        qWarning() << "failed to register dbus object" << connection.lastError().message();
+    }
+    ```
+
+3. 单独使用该类：
+
+    ```cpp
+    QDBusService service;
+    service.initPolicy(QDBusConnection::SessionBus,
+        QString(SERVICE_CONFIG_DIR) + "other/demo.json");
+    ```
+
+    可以将这段代码放在任何类里。
+:::
 
 :::tip 提示
 独立应用若需要按需启动，需要安装 DBus service文件，参考[demo](#附件列表)
 :::
+
+### API 说明
+
+```cpp
+QDBusService::initPolicy(const QDBusConnection::BusType&, const QString&)
+```
+
+初始化配置，需要指定 DBus 类型和配置文件路径。
+<br><br>
+
+```cpp
+QDBusService::qDbusConnection()
+```
+
+获取 QDBusConnection 对象，为保持服务总线在一个对象上，务必不要使用默认的 QDBusConnection，而是从这里获取。
+<br><br>
+
+```cpp
+QDBusService::lockTimer(bool)
+```
+
+是否锁定计时器，若锁定计时器，则在解锁前不会执行闲时退出操作。参数为`true`是锁定，否则解锁。
 
 ## 给插件或应用加上权限
 
