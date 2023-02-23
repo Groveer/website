@@ -346,7 +346,7 @@ sudo systemctl restart deepin-service-plugin@app.service
 |---------------------------------------------------|
 | [qt 带权限插件 demo](/rc/plugin-qdbus-demo2.tar.gz) |
 | [sd 带权限插件 demo](/rc/plugin-sdbus-demo1.tar.gz) |
-| [独立应用 demo](rc/libqdbusservice-demo.tar.gz)    |
+| [独立应用 demo](/rc/libqdbusservice-demo.tar.gz)    |
 
 ## 更新日志
 
@@ -354,7 +354,7 @@ sudo systemctl restart deepin-service-plugin@app.service
   - 新增权限管控流程和独立应用开发流程
   - 新增注意事项，调试技巧可参考注意事项
   - 新增附件列表，实现了常见场景的 demo
-  - 优化整体页面说明，分为普通插件开发、带权限管控的插件开发、独立应用开发
+  - 优化整体页面说明，分为插件开发、独立应用开发以及如何给插件或应用加上权限管控
 - 2023/02/08:
   - 新增依赖配置，配置依赖服务后，在依赖未启动时不会启动本服务
   - 新增延时启动，可配置本服务延时启动
