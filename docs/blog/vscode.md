@@ -57,7 +57,7 @@ go env -w GO111MODULE=auto
    :::details ArchLinux
 
    ```shell
-   sudo apt install plantuml graphviz
+   sudo pacman -S plantuml graphviz
    ```
 
    :::
@@ -65,7 +65,7 @@ go env -w GO111MODULE=auto
    :::details Debian
 
    ```shell
-   sudo pacman -S plantuml graphviz
+   sudo apt install plantuml graphviz
    ```
 
    :::
