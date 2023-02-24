@@ -1,4 +1,4 @@
-import { defineConfig } from "vitepress";
+import { defineConfig, DefaultTheme } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
 
 export default withMermaid(
@@ -11,7 +11,18 @@ defineConfig({
   cleanUrls: true,
   ignoreDeadLinks: true,
 
-  head: [["meta", { name: "theme-color", content: "#3c8772" }]],
+  head: [
+    ["meta", { name: "theme-color", content: "#646cff" }],
+    [
+      'script',
+      {
+        src: 'https://cdn.usefathom.com/script.js',
+        'data-site': 'CBDFBSLI',
+        'data-spa': 'auto',
+        defer: '',
+      },
+    ],
+  ],
 
   markdown: {
     headers: {
@@ -21,6 +32,10 @@ defineConfig({
 
   themeConfig: {
     nav: nav(),
+
+    outline: {
+      label: '本页目录'
+    },
 
     sidebar: {
       "/blog/": sidebarBlog(),
