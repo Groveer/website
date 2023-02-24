@@ -1,4 +1,4 @@
-import { defineConfig, DefaultTheme } from "vitepress";
+import { defineConfig} from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
 
 export default withMermaid(
@@ -68,7 +68,8 @@ defineConfig({
 function nav() {
   return [
     { text: "博客", link: "/blog/toc", activeMatch: "/blog/" },
-    { text: "关于", link: "/about", activeMatch: "/" },
+    { text: "关于", link: "/about/about", activeMatch: "/about/about" },
+    { text: "留言板", link: "/about/talk", activeMatch: "/about/talk" },
     {
       text: "友链",
       items: [

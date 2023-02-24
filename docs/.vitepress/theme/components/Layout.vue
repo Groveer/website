@@ -1,7 +1,7 @@
 <!--.vitepress/theme/MyLayout.vue-->
 <script setup>
 import DefaultTheme from 'vitepress/theme';
-import ValineComment from './ValineComment.vue';
+import ReadCount from './ReadCount.vue';
 
 const { Layout } = DefaultTheme
 </script>
@@ -9,7 +9,7 @@ const { Layout } = DefaultTheme
 <template>
   <Layout>
     <template #doc-after>
-      <ValineComment />
+      <ReadCount/>
     </template>
   </Layout>
 </template>

@@ -1,7 +1,13 @@
 <template>
   <div class="page">
     <section class="page-edit">
-      <div id="vcomments"></div>
+      <div class="page-edit-read">
+        <!-- id 将作为查询条件 -->
+        <span class="leancloud-visitors" data-flag-title="Your Article Title">
+          <em class="post-meta-item-text">阅读量： </em>
+          <i class="leancloud-visitors-count"></i>
+        </span>
+      </div>
     </section>
   </div>
 </template>
@@ -15,18 +21,6 @@ const route = useRoute();
 const initValine = () => {
   let path = location.origin + location.pathname;
   document.getElementsByClassName("leancloud-visitors")[0].id = path;
-  new Valine({
-    el: "#vcomments",
-    appId: 'haIm5FeUe01oJTIEMfDVhedg-gzGzoHsz',// your appId
-    appKey: 'kDqlmQdihqGffFnTesNcm86x', // your appKey
-    notify: false,
-    verify: false,
-    path: path,
-    visitor: true,
-    avatar: "mm",
-    placeholder:
-      "客官，留下点什么吧！",
-  });
 };
 
 watch(
