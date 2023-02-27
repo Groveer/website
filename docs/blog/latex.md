@@ -142,4 +142,4 @@ lualatex "-shell-escape" \
 
 ### 附件
 
-* [plantuml 包](/rc/plantuml-1.2022.6.jar)
+* [plantuml 包](./rc/plantuml-1.2022.6.jar)

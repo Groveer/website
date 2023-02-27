@@ -15,8 +15,8 @@ feature: true
 为了与 Linux 拥有一致的开发体验，特在此记录：在 Windows 上使用 Neovim + CMake + MSBuild 搭建 C/C++ 环境。
 
 首先上效果：
-![效果1](/img/windows_nvim/nvim_1.gif)
-![效果2](/img/windows_nvim/nvim_2.gif)
+![效果1](./img/windows_nvim/nvim_1.gif)
+![效果2](./img/windows_nvim/nvim_2.gif)
 
 > 由于 Neovim 插件和一些配置需要访问[Github](https://github.com/)，若无法访问，请自行百度`科学上网`和`DNS解析`，另不推荐使用镜像站或[Gitee](https://gitee.com/)，因为某些插件可能并没有被同步。
 
@@ -67,10 +67,10 @@ feature: true
 1. 下载[Visual Studio 2022 生成工具](https://visualstudio.microsoft.com/zh-hans/downloads/)
 2. 注意**不是**`Visual Studio 2022`，`Visual Studio 2022`是大家熟悉的 IDE
 3. 应该往下拉展开`适用于Visual Studio 2022 的工具`，选择`Visual Studio 2022 生成工具`进行下载
-![下载Visual Studio 2022 生成工具](/img/windows_nvim/msbuild.jpg)
+![下载Visual Studio 2022 生成工具](./img/windows_nvim/msbuild.jpg)
 4. 双击 exe 文件进行安装
 5. 在弹出的界面，左侧勾选`使用 C++ 的桌面开发`，右侧只需勾选`MSVC v143 *** 生成工具`和`Windows 11/10 SDK`即可
-![安装 C++ 编译器和 SDK](/img/windows_nvim/msbuild_c++.jpg)
+![安装 C++ 编译器和 SDK](./img/windows_nvim/msbuild_c++.jpg)
 
 #### CMake
 

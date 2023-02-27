@@ -438,11 +438,11 @@ sudo systemctl restart deepin-service-plugin@app.service
 
 ## 附件列表
 
-| [qt 普通插件 demo](/rc/plugin-qdbus-demo1.tar.gz)   |
+| [qt 普通插件 demo](./rc/plugin-qdbus-demo1.tar.gz)   |
 |---------------------------------------------------|
-| [qt 带权限插件 demo](/rc/plugin-qdbus-demo2.tar.gz) |
-| [sd 带权限插件 demo](/rc/plugin-sdbus-demo1.tar.gz) |
-| [独立应用 demo](/rc/libqdbusservice-demo.tar.gz)    |
+| [qt 带权限插件 demo](./rc/plugin-qdbus-demo2.tar.gz) |
+| [sd 带权限插件 demo](./rc/plugin-sdbus-demo1.tar.gz) |
+| [独立应用 demo](./rc/libqdbusservice-demo.tar.gz)    |
 
 ## 更新日志
 

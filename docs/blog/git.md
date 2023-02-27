@@ -28,7 +28,7 @@ winget install Git.Git
 ```
 
 使用 winget 安装 Git 会自动将 Path 添加进环境变量，但需要重启系统或 Windows 资源管理器：
-![重启 Windows 资源管理器](/img/git/restart_explorer.png)
+![重启 Windows 资源管理器](./img/git/restart_explorer.png)
 
 此时 Git 就可以正常使用了，但想访问 github 还需要进行配置（科学上网），这里自行购买代理或使用机场代理。
 
@@ -51,7 +51,7 @@ ssh-keygen.exe -t ed25519 -C "groveer"
 cat ~\.ssh\id_ed25519.pub
 ```
 
-![添加 ssh key](/img/git/add_sshkey.png)
+![添加 ssh key](./img/git/add_sshkey.png)
 
 在 Windows 上还需要对本地 ssh 进行配置才可正常访问 github，原因查看[官方文档](https://docs.github.com/zh/authentication/troubleshooting-ssh/using-ssh-over-the-https-port)：
 
