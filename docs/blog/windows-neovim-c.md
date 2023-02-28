@@ -48,6 +48,8 @@ feature: true
 1. 下载[ripgrep](https://github.com/BurntSushi/ripgrep/releases)的 zip 文件
 2. 将解压后的文件夹添加进环境变量
 
+> 如果嫌弃文件夹名称太长，也可重命名后再添加环境变量。
+
 #### nvm
 
 1. 下载[nvm-setup.exe](https://github.com/coreybutler/nvm-windows/releases)
@@ -60,6 +62,12 @@ feature: true
 1. 下载[python](https://www.python.org/downloads/)
 2. 双击 exe 文件安装
 
+勾选 pip：
+![勾选pip](./img/windows_nvim/python_install1.jpg)
+
+勾选所有用户：
+![勾选所有用户](./img/windows_nvim/python_install2.jpg)
+
 > 建议自定义安装，注意勾选`pip`。
 
 #### MSBuild
@@ -69,15 +77,8 @@ feature: true
 3. 应该往下拉展开`适用于Visual Studio 2022 的工具`，选择`Visual Studio 2022 生成工具`进行下载
 ![下载Visual Studio 2022 生成工具](./img/windows_nvim/msbuild.jpg)
 4. 双击 exe 文件进行安装
-5. 在弹出的界面，左侧勾选`使用 C++ 的桌面开发`，右侧只需勾选`MSVC v143 *** 生成工具`和`Windows 11/10 SDK`即可
+5. 在弹出的界面，左侧勾选`使用 C++ 的桌面开发`，右侧按下图勾选即可
 ![安装 C++ 编译器和 SDK](./img/windows_nvim/msbuild_c++.jpg)
-
-#### CMake
-
-1. 下载[cmake*.msi](https://cmake.org/download/)
-2. 双击 msi 文件安装
-
-> 安装时记得勾选将CMake添加进系统环境变量。
 
 ### 命令行安装
 
@@ -132,6 +133,12 @@ nvm npm_mirror https://npmmirror.com/mirrors/npm/
     nvm use 19.4.0
     ```
 
+    5. 修改默认 npm 地址，使用国内源能加快访问速度：
+
+    ```powershell
+    npm config set registry https://registry.npmmirror.com
+    ```
+
 > 若使用`nvm`命令提示不命令行、函数、脚本或者可执行程序的名称，可能需要重启系统或 Windows 资源管理器
 
 ## 开发环境配置
@@ -157,31 +164,33 @@ User git
 
 #### Neovim 配置
 
-1. Neovim 配置对于刚接触的人可能比较复杂，其实就是配置一些插件，大部分插件的 github 都有其使用说明，这里为了方便，可以直接使用本人的[配置](https://github.com/Groveer/dotfiles/tree/master/nvim)，并且这里也对该配置的快捷键进行了说明，执行：
+1. Neovim 配置对于刚接触的人可能比较复杂，其实就是配置一些插件，大部分插件的 github 都有其使用说明，这里为了方便，可以直接使用本人的[配置](https://github.com/Groveer/nvimdots)，执行：
 
 ```powershell
-git clone https://github.com/Groveer/dotfiles.git
+git clone https://github.com/Groveer/nvimdots.git
 ```
 
 2. 创建软件，Neovim 读取配置是在固定的目录：
 
-```powershell
-mklink /d C:\Users\grove\AppData\Local\nvim D:\Project\dotfiles\nvim
+```cmd
+mklink /d C:\Users\grove\AppData\Local\nvim D:\Project\nvimdots
 ```
 
-其中，`grove`是本地账户名，`D:\Project\dotfiles`是 git clone 下来的项目，dotfiles 项目是本人在 Linux 下的[个人配置](https://github.com/Groveer/dotfiles)，有兴趣的可以看看
+其中，`grove`是本地账户名，`D:\Project\nvimdots`是 git clone 下来的项目
 
-3. 本人的 Neovim 配置使用 Packer 进行插件管理，首次启动 Neovim 会报错，忽略错误可进行插件安装：
+> 注意，本条命令要在 cmd 中执行，在 powershell 是没有该命令的！
+
+3. 本人的 Neovim 配置使用 Lazy.nvim 进行插件管理，首次启动会进行安装插件，因为默认使用 ssh 协议，请确保 git 使用 ssh 协议能够正确访问 github：
 
 ```powershell
 nvim
 ```
 
-4. 若部分插件安装失败，可重新执行命令进行更新：
+4. 初次启动可能会提示找不到 C 编译器，此时可以使用生成工具提供的终端进行启动：
 
-```powershell
-:PackerSync
-```
+![terminal](./img/windows_nvim/select_terminal.jpg)
+
+> 当然也可以对其启动目录进行修改，像本人就修改为`D:/Project`目录
 
 5. 一般来说，进行了上面的软件安装，Neovim 所需的程序就齐全了，当然也可以执行命令进行检查：
 
@@ -199,9 +208,9 @@ nvim
 
 #### 扩展字体配置
 
-1. 下载[FiraCode](https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.0/FiraCode.zip)字体
+1. 下载[Maple](https://github.com/subframe7536/Maple-font/releases/download/v6.2/MapleMono-SC-NF.zip)字体
 2. 解压文件后全选 ttf 文件，然后右键安装
-3. 终端：设置->默认值->字体，选择`FiraCode Nerd Font Mono Retina`，保存弹窗提示忽略
+3. 终端：设置->默认值->字体，选择`Maple Mono SC NF`，保存弹窗提示忽略
 4. 重启终端，进入 nvim，正常显示图标字体
 
-> 在配置过程中若遇到什么问题，可在博客下方进行留言。
+> 在配置过程中若遇到什么问题，可在博客中留言。
