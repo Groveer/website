@@ -207,7 +207,15 @@ F --> K
   "name": "org.deepin.service.demo", // [必选]dbus name，框架中会注册该name
   "policyVersion": "1.0", // [可选]配置文件版本，预留配置，无实际用途
   "policyStartType": "Resident", // [可选]启动方式，Resident（常驻）、OnDemand（按需启动），默认Resident。若设置 OnDaemand，则需要设置 idleTime 字段！
-  "idleTime": 10 // [可选]若服务是按需启动，则可以设置闲时时间，超时则会退出当前进程
+  "idleTime": 10, // [可选]若服务是按需启动，则可以设置闲时时间，超时则会退出当前进程
+  "policy": [
+    {
+      "path": "/org/deepin/service/demo"// 应用内注册了的 Object 需要在这里添加，否则闲时退出无法生效
+    },
+    {
+      "path": "/org/deepin/service/test"// 第二个 Object
+    }
+  ]
 }
 ```
 
