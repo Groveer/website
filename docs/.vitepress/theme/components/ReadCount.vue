@@ -21,6 +21,18 @@ const route = useRoute();
 const initValine = () => {
   let path = location.origin + location.pathname;
   document.getElementsByClassName("leancloud-visitors")[0].id = path;
+  new Valine({
+    el: "#vcomments",
+    appId: 'haIm5FeUe01oJTIEMfDVhedg-gzGzoHsz',// your appId
+    appKey: 'kDqlmQdihqGffFnTesNcm86x', // your appKey
+    notify: false,
+    verify: false,
+    path: path,
+    visitor: true,
+    avatar: "mm",
+    placeholder:
+      "客官，留下点什么吧！",
+  });
 };
 
 watch(

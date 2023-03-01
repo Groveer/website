@@ -57,9 +57,3 @@ function remoteImport(url) {
 
 </script>
 
-<style scoped>
-.page-edit-read {
-  text-align: right;
-  margin: 14px 0;
-}
-</style>
