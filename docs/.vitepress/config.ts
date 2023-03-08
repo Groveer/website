@@ -39,6 +39,7 @@ defineConfig({
 
     sidebar: {
       "/blog/": sidebarBlog(),
+      "/qt/": sidebarQt(),
     },
 
     editLink: {
@@ -68,6 +69,16 @@ defineConfig({
 function nav() {
   return [
     { text: "博客", link: "/blog/toc", activeMatch: "/blog/" },
+    {
+      text: "专栏",
+      items: [
+        {
+          text: "跟我一起学Qt",
+          link: "/qt/index",
+          activeMatch: "/qt/",
+        },
+      ],
+    },
     { text: "关于", link: "/about/about", activeMatch: "/about/about" },
     { text: "留言板", link: "/about/talk", activeMatch: "/about/talk" },
     {
@@ -138,6 +149,15 @@ function sidebarBlog() {
         { text: "VsCode 配置", link: "/blog/vscode" },
         { text: "Windows Neovim 配置", link: "/blog/windows-neovim-c" },
       ],
+    },
+  ];
+}
+
+function sidebarQt() {
+  return [
+    {
+      text: "前言",
+      link: "qt/index",
     },
   ];
 }
