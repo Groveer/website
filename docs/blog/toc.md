@@ -1,6 +1,7 @@
 ---
 title: 目录
 ---
+
 # {{ $frontmatter.title }}
 
 1. Linux
@@ -24,6 +25,7 @@ title: 目录
    1. [Git 小技巧](git)
    2. [Latex 搭建](latex)
    3. [Qemu 工具](qemu)
+   4. [clash 配置](clash)
 4. IDE
    1. [Vim 配置](vim)
    2. [VsCode 配置](vscode)

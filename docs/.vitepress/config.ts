@@ -1,70 +1,68 @@
-import { defineConfig} from "vitepress";
+import { defineConfig } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
 
 export default withMermaid(
-defineConfig({
-  lang: "zh-CN",
-  title: "易上止正",
-  description: "付出不亚于任何人的努力",
+  defineConfig({
+    lang: "zh-CN",
+    title: "易上止正",
+    description: "付出不亚于任何人的努力",
 
-  lastUpdated: true,
-  cleanUrls: true,
-  ignoreDeadLinks: true,
+    lastUpdated: true,
+    cleanUrls: true,
+    ignoreDeadLinks: true,
 
-  head: [
-    ["meta", { name: "theme-color", content: "#646cff" }],
-    [
-      'script',
-      {
-        src: 'https://cdn.usefathom.com/script.js',
-        'data-site': 'CBDFBSLI',
-        'data-spa': 'auto',
-        defer: '',
+    head: [
+      ["meta", { name: "theme-color", content: "#646cff" }],
+      [
+        "script",
+        {
+          src: "https://cdn.usefathom.com/script.js",
+          "data-site": "CBDFBSLI",
+          "data-spa": "auto",
+          defer: "",
+        },
+      ],
+    ],
+
+    markdown: {
+      headers: {
+        level: [0, 0],
       },
-    ],
-  ],
-
-  markdown: {
-    headers: {
-      level: [0, 0],
-    },
-  },
-
-  themeConfig: {
-    nav: nav(),
-
-    outline: {
-      label: '本页目录'
     },
 
-    sidebar: {
-      "/blog/": sidebarBlog(),
-      "/qt/": sidebarQt(),
+    themeConfig: {
+      nav: nav(),
+
+      outline: {
+        label: "本页目录",
+      },
+
+      sidebar: {
+        "/blog/": sidebarBlog(),
+        "/qt/": sidebarQt(),
+      },
+
+      editLink: {
+        pattern:
+          "https://github.com/groveer/groveer.github.io/edit/main/docs/:path",
+        text: "在 GitHub 上编辑此页",
+      },
+
+      socialLinks: [{ icon: "github", link: "https://github.com/groveer" }],
+
+      footer: {
+        message: "博客内容遵循 CC BY-NC-SA 4.0 协议。",
+        copyright: "Copyright © 2022-至今 易上止正",
+      },
+
+      algolia: {
+        appId: "GV7KKP6C12",
+        apiKey: "30f9e55bc540ba45254b012c4abffaae",
+        indexName: "groveer",
+      },
     },
-
-    editLink: {
-      pattern:
-        "https://github.com/groveer/groveer.github.io/edit/main/docs/:path",
-      text: "在 GitHub 上编辑此页",
-    },
-
-    socialLinks: [
-      { icon: "github", link: "https://github.com/groveer" },
-    ],
-
-    footer: {
-      message: "博客内容遵循 CC BY-NC-SA 4.0 协议。",
-      copyright: "Copyright © 2022-至今 易上止正",
-    },
-
-    algolia: {
-      appId: 'GV7KKP6C12',
-      apiKey: '30f9e55bc540ba45254b012c4abffaae',
-      indexName: 'groveer'
-    }
-  },
-})
-)
+  })
+);
 
 function nav() {
   return [
@@ -105,7 +103,10 @@ function sidebarBlog() {
           items: [
             { text: "系统安装", link: "/blog/archlinux-install" },
             { text: "系统配置", link: "/blog/archlinux-config" },
-            { text: "安装 Nvidia 闭源驱动", link: "/blog/archlinux-install-nvidia" },
+            {
+              text: "安装 Nvidia 闭源驱动",
+              link: "/blog/archlinux-install-nvidia",
+            },
           ],
         },
         {
@@ -113,7 +114,10 @@ function sidebarBlog() {
           collapsed: false,
           items: [
             { text: "系统修复", link: "/blog/deepin-repair-system" },
-            { text: "服务框架使用指南", link: "/blog/deepin-service-use-guide" },
+            {
+              text: "服务框架使用指南",
+              link: "/blog/deepin-service-use-guide",
+            },
           ],
         },
         { text: "自动登陆", link: "/blog/linux-auto-login" },
@@ -139,6 +143,7 @@ function sidebarBlog() {
         { text: "Git 小技巧", link: "/blog/git" },
         { text: "Latex 搭建", link: "/blog/latex" },
         { text: "Qemu 工具", link: "/blog/qemu" },
+        { text: "clash 配置", link: "/blog/clash" },
       ],
     },
     {
