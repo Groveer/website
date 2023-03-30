@@ -1,5 +1,10 @@
 import { defineConfig } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
+import { createWriteStream } from "node:fs";
+import { resolve } from "node:path";
+import { SitemapStream } from "sitemap";
+
+const links = [];
 
 export default withMermaid(
   defineConfig({
@@ -60,6 +65,24 @@ export default withMermaid(
         apiKey: "30f9e55bc540ba45254b012c4abffaae",
         indexName: "groveer",
       },
+    },
+    transformHtml: (_, id, { pageData }) => {
+      if (!/[\\/]404\.html$/.test(id))
+        links.push({
+          // you might need to change this if not using clean urls mode
+          url: pageData.relativePath.replace(/((^|\/)index)?\.md$/, "$2"),
+          lastmod: pageData.lastUpdated,
+        });
+    },
+    buildEnd: async ({ outDir }) => {
+      const sitemap = new SitemapStream({
+        hostname: "https://blog.groveer.top/",
+      });
+      const writeStream = createWriteStream(resolve(outDir, "sitemap.xml"));
+      sitemap.pipe(writeStream);
+      links.forEach((link) => sitemap.write(link));
+      sitemap.end();
+      await new Promise((r) => writeStream.on("finish", r));
     },
   })
 );
