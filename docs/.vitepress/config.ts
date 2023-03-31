@@ -187,5 +187,9 @@ function sidebarQt() {
       text: "前言",
       link: "qt/index",
     },
+    {
+      text: "Windows 开发环境配置",
+      link: "qt/development-environment-windows",
+    },
   ];
 }
