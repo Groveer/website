@@ -10,6 +10,7 @@ categories:
 cover: https://pic.3gbizhi.com/2020/0817/20200817121447528.png
 feature: true
 ---
+
 # {{ $frontmatter.title }}
 
 为了与 Linux 拥有一致的开发体验，特在此记录：在 Windows 上使用 Neovim + CMake + MSBuild 搭建 C/C++ 环境。
@@ -24,7 +25,7 @@ feature: true
 
 ## 基础软件包安装
 
-本篇文章涉及到的安装方式有3种：
+本篇文章涉及到的安装方式有 3 种：
 
 1. 应用商店，可能需要微软账户
 2. 普通安装，一般是双击 exe，或者将 exe 文件放到指定目录，也有压缩文件，解压即可
@@ -57,7 +58,7 @@ feature: true
 
 > 不建议更改安装路径，可能涉及权限问题导致后面安装 nodejs 和 npm 比较麻烦。
 
-#### python
+#### python & ninja
 
 1. 下载[python](https://www.python.org/downloads/)
 2. 双击 exe 文件安装
@@ -70,15 +71,21 @@ feature: true
 
 > 建议自定义安装，注意勾选`pip`。
 
+打开终端，安装`ninja`:
+
+```powershell
+pip install ninja
+```
+
 #### MSBuild
 
 1. 下载[Visual Studio 2022 生成工具](https://visualstudio.microsoft.com/zh-hans/downloads/)
 2. 注意**不是**`Visual Studio 2022`，`Visual Studio 2022`是大家熟悉的 IDE
 3. 应该往下拉展开`适用于Visual Studio 2022 的工具`，选择`Visual Studio 2022 生成工具`进行下载
-![下载Visual Studio 2022 生成工具](./img/windows_nvim/msbuild.jpg)
+   ![下载Visual Studio 2022 生成工具](./img/windows_nvim/msbuild.jpg)
 4. 双击 exe 文件进行安装
 5. 在弹出的界面，左侧勾选`使用 C++ 的桌面开发`，右侧按下图勾选即可
-![安装 C++ 编译器和 SDK](./img/windows_nvim/msbuild_c++.jpg)
+   ![安装 C++ 编译器和 SDK](./img/windows_nvim/msbuild_c++.jpg)
 
 ### 命令行安装
 
@@ -109,35 +116,36 @@ nvm npm_mirror https://npmmirror.com/mirrors/npm/
 ```
 
 3. 安装 nodejs 和 npm：
-    1. 查看本地已装版本：
 
-    ```powershell
-    nvm ls
-    ```
+   1. 查看本地已装版本：
 
-    2. 查看远程可用版本：
+   ```powershell
+   nvm ls
+   ```
 
-    ```powershell
-    nvm ls available
-    ```
+   2. 查看远程可用版本：
 
-    3. 安装最新版本：
+   ```powershell
+   nvm ls available
+   ```
 
-    ```powershell
-    nvm install 19.4.0
-    ```
+   3. 安装最新版本：
 
-    4. 安装完会提示使用安装的版本：
+   ```powershell
+   nvm install 19.4.0
+   ```
 
-    ```powershell
-    nvm use 19.4.0
-    ```
+   4. 安装完会提示使用安装的版本：
 
-    5. 修改默认 npm 地址，使用国内源能加快访问速度：
+   ```powershell
+   nvm use 19.4.0
+   ```
 
-    ```powershell
-    npm config set registry https://registry.npmmirror.com
-    ```
+   5. 修改默认 npm 地址，使用国内源能加快访问速度：
+
+   ```powershell
+   npm config set registry https://registry.npmmirror.com
+   ```
 
 > 若使用`nvm`命令提示不命令行、函数、脚本或者可执行程序的名称，可能需要重启系统或 Windows 资源管理器
 
@@ -153,7 +161,7 @@ git config --global https.proxy http://127.0.0.1:7890
 ```
 
 2. 有时配置 ssh key 之后，每次 clone pull push 的时候还是提示输入密码，可以参考[官方文档](https://docs.github.com/zh/authentication/troubleshooting-ssh/using-ssh-over-the-https-port)
-添加`~/.ssh/config`文件，并且写入：
+   添加`~/.ssh/config`文件，并且写入：
 
 ```powershell
 Host github.com
