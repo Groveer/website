@@ -39,6 +39,11 @@ feature: true
 
 ### 普通安装
 
+#### zip & unzip
+
+1. 下载[附件](rc/unzip-command.zip)
+2. 解压后直接丢到`C:\Windows`目录即可
+
 #### wget
 
 1. 下载[wget.exe](https://eternallybored.org/misc/wget/)
@@ -151,7 +156,7 @@ nvm npm_mirror https://npmmirror.com/mirrors/npm/
 
 ## 开发环境配置
 
-#### Git 配置
+### Git 配置
 
 1. 配置 Git 代理，执行：
 
@@ -170,7 +175,7 @@ Port 443
 User git
 ```
 
-#### Neovim 配置
+### Neovim 配置
 
 1. Neovim 配置对于刚接触的人可能比较复杂，其实就是配置一些插件，大部分插件的 github 都有其使用说明，这里为了方便，可以直接使用本人的[配置](https://github.com/Groveer/nvimdots)，执行：
 
@@ -214,7 +219,7 @@ nvim
 
 > 本人在某次安装过程中，发现某个 lsp 无法安装，通过日志查看是某个目录无法删除，打开 Windows 文件管理器进行删除，提示某个程序正在占用，也不想继续排查是哪个程序占用，直接重启电脑，然后再次打开`nvim`，就正常了。
 
-#### 扩展字体配置
+### 扩展字体配置
 
 1. 下载[Maple](https://github.com/subframe7536/Maple-font/releases/download/v6.2/MapleMono-SC-NF.zip)字体
 2. 解压文件后全选 ttf 文件，然后右键安装
