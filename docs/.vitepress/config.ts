@@ -29,18 +29,11 @@ export default withMermaid(
       ],
     ],
 
-    markdown: {
-      headers: {
-        level: [0, 0],
-      },
-    },
-
     themeConfig: {
       nav: nav(),
 
-      outline: {
-        label: "本页目录",
-      },
+      outlineTitle: "本页目录",
+      outline: [2, 4],
 
       sidebar: {
         "/blog/": sidebarBlog(),
