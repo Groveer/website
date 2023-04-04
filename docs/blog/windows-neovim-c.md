@@ -49,6 +49,11 @@ feature: true
 1. 下载[wget.exe](https://eternallybored.org/misc/wget/)
 2. 将`wget.exe`放在`C:\Windows`目录
 
+#### tree-sitter
+
+1. 下载[tree-sitter-windows-x64.gz](https://github.com/tree-sitter/tree-sitter/releases)
+2. 解压文件将`tree-sitter.exe`文件放在`C:\Windows`目录
+
 #### ripgrep
 
 1. 下载[ripgrep](https://github.com/BurntSushi/ripgrep/releases)的 zip 文件
@@ -63,7 +68,7 @@ feature: true
 
 > 不建议更改安装路径，可能涉及权限问题导致后面安装 nodejs 和 npm 比较麻烦。
 
-#### python & ninja
+#### python
 
 1. 下载[python](https://www.python.org/downloads/)
 2. 双击 exe 文件安装
@@ -76,10 +81,10 @@ feature: true
 
 > 建议自定义安装，注意勾选`pip`。
 
-打开终端，安装`ninja`:
+安装常用工具：
 
 ```powershell
-pip install ninja
+pip install pynvim ninja
 ```
 
 #### MSBuild
@@ -152,21 +157,20 @@ nvm npm_mirror https://npmmirror.com/mirrors/npm/
    npm config set registry https://registry.npmmirror.com
    ```
 
+   6. 安装 neovim 支持：
+
+   ```powershell
+   npm install -g neovim
+   ```
+
 > 若使用`nvm`命令提示不命令行、函数、脚本或者可执行程序的名称，可能需要重启系统或 Windows 资源管理器
 
 ## 开发环境配置
 
 ### Git 配置
 
-1. 配置 Git 代理，执行：
-
-```powershell
-git config --global http.proxy http://127.0.0.1:7890
-git config --global https.proxy http://127.0.0.1:7890
-```
-
-2. 有时配置 ssh key 之后，每次 clone pull push 的时候还是提示输入密码，可以参考[官方文档](https://docs.github.com/zh/authentication/troubleshooting-ssh/using-ssh-over-the-https-port)
-   添加`~/.ssh/config`文件，并且写入：
+有时配置 ssh key 之后，每次 clone pull push 的时候还是提示输入密码，可以参考[官方文档](https://docs.github.com/zh/authentication/troubleshooting-ssh/using-ssh-over-the-https-port)
+添加`~/.ssh/config`文件，并且写入：
 
 ```powershell
 Host github.com
