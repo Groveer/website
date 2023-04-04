@@ -25,7 +25,10 @@
 5. 勾选展开 Qt 对应版本，勾选`MSVC 2019 64-bit`
 6. 其他默认勾选的选项可取消勾选，若习惯使用 qtcreator，可以将其勾选上
 7. 最后点击右下角的安装，等待安装完成。
-8. 若安装一直报错，可能需要在安装界面左下角配置代理。
+8. 若安装一直报错，可使用[fiddler](https://www.telerik.com/fiddler)工具替换国内源，再进行安装，参考这篇[文章](https://zhuanlan.zhihu.com/p/561274793)
+   ```powershell
+   urlreplace download.qt.io mirrors.tuna.tsinghua.edu.cn/qt
+   ```
 
 ## 环境变量
 
