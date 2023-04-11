@@ -12,6 +12,7 @@ title: 目录
    2. Deepin
       1. [系统修复](deepin-repair-system)
       1. [服务框架使用指南](deepin-service-use-guide)
+      1. [正确使用日志记录](how-to-use-logger)
    3. [自动登陆](linux-auto-login)
    4. [挂载小技巧](linux-mount)
    5. [网络管理](linux-networkmanager)

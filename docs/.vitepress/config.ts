@@ -134,6 +134,7 @@ function sidebarBlog() {
               text: "服务框架使用指南",
               link: "/blog/deepin-service-use-guide",
             },
+            { text: "正确使用日志记录", link: "/blog/how-to-use-logger" },
           ],
         },
         { text: "自动登陆", link: "/blog/linux-auto-login" },
