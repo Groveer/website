@@ -1,84 +1,81 @@
 import { defineConfig } from "vitepress";
-import { withMermaid } from "vitepress-plugin-mermaid";
 import { createWriteStream } from "node:fs";
 import { resolve } from "node:path";
 import { SitemapStream } from "sitemap";
 
 const links = [];
 
-export default withMermaid(
-  defineConfig({
-    lang: "zh-CN",
-    title: "易上止正",
-    description: "付出不亚于任何人的努力",
+export default defineConfig({
+  lang: "zh-CN",
+  title: "易上止正",
+  description: "付出不亚于任何人的努力",
 
-    lastUpdated: true,
-    cleanUrls: true,
-    ignoreDeadLinks: true,
+  lastUpdated: true,
+  cleanUrls: true,
+  ignoreDeadLinks: true,
 
-    head: [
-      ["meta", { name: "theme-color", content: "#646cff" }],
-      [
-        "script",
-        {
-          src: "https://cdn.usefathom.com/script.js",
-          "data-site": "CBDFBSLI",
-          "data-spa": "auto",
-          defer: "",
-        },
-      ],
+  head: [
+    ["meta", { name: "theme-color", content: "#646cff" }],
+    [
+      "script",
+      {
+        src: "https://cdn.usefathom.com/script.js",
+        "data-site": "CBDFBSLI",
+        "data-spa": "auto",
+        defer: "",
+      },
     ],
+  ],
 
-    themeConfig: {
-      nav: nav(),
+  themeConfig: {
+    nav: nav(),
 
-      outlineTitle: "本页目录",
-      outline: [2, 4],
+    outlineTitle: "本页目录",
+    outline: [2, 4],
 
-      sidebar: {
-        "/blog/": sidebarBlog(),
-        "/qt/": sidebarQt(),
-      },
-
-      editLink: {
-        pattern:
-          "https://github.com/groveer/groveer.github.io/edit/main/docs/:path",
-        text: "在 GitHub 上编辑此页",
-      },
-
-      socialLinks: [{ icon: "github", link: "https://github.com/groveer" }],
-
-      footer: {
-        message: "博客内容遵循 CC BY-NC-SA 4.0 协议。",
-        copyright: "Copyright © 2022-至今 易上止正",
-      },
-
-      algolia: {
-        appId: "GV7KKP6C12",
-        apiKey: "30f9e55bc540ba45254b012c4abffaae",
-        indexName: "groveer",
-      },
+    sidebar: {
+      "/blog/": sidebarBlog(),
+      "/qt/": sidebarQt(),
     },
-    transformHtml: (_, id, { pageData }) => {
-      if (!/[\\/]404\.html$/.test(id))
-        links.push({
-          // you might need to change this if not using clean urls mode
-          url: pageData.relativePath.replace(/((^|\/)index)?\.md$/, "$2"),
-          lastmod: pageData.lastUpdated,
-        });
+
+    editLink: {
+      pattern:
+        "https://github.com/groveer/groveer.github.io/edit/main/docs/:path",
+      text: "在 GitHub 上编辑此页",
     },
-    buildEnd: async ({ outDir }) => {
-      const sitemap = new SitemapStream({
-        hostname: "https://blog.groveer.top/",
+
+    socialLinks: [{ icon: "github", link: "https://github.com/groveer" }],
+
+    footer: {
+      message: "博客内容遵循 CC BY-NC-SA 4.0 协议。",
+      copyright: "Copyright © 2022-至今 易上止正",
+    },
+
+    algolia: {
+      appId: "GV7KKP6C12",
+      apiKey: "30f9e55bc540ba45254b012c4abffaae",
+      indexName: "groveer",
+    },
+  },
+  transformHtml: (_, id, { pageData }) => {
+    if (!/[\\/]404\.html$/.test(id))
+      links.push({
+        // you might need to change this if not using clean urls mode
+        url: pageData.relativePath.replace(/((^|\/)index)?\.md$/, "$2"),
+        lastmod: pageData.lastUpdated,
       });
-      const writeStream = createWriteStream(resolve(outDir, "sitemap.xml"));
-      sitemap.pipe(writeStream);
-      links.forEach((link) => sitemap.write(link));
-      sitemap.end();
-      await new Promise((r) => writeStream.on("finish", r));
-    },
-  })
-);
+  },
+  buildEnd: async ({ outDir }) => {
+    const sitemap = new SitemapStream({
+      hostname: "https://blog.groveer.top/",
+    });
+    const writeStream = createWriteStream(resolve(outDir, "sitemap.xml"));
+    sitemap.pipe(writeStream);
+    links.forEach((link) => sitemap.write(link));
+    sitemap.end();
+    await new Promise((r) => writeStream.on("finish", r));
+  },
+});
 
 function nav() {
   return [
@@ -130,10 +127,6 @@ function sidebarBlog() {
           collapsed: false,
           items: [
             { text: "系统修复", link: "/blog/deepin-repair-system" },
-            {
-              text: "服务框架使用指南",
-              link: "/blog/deepin-service-use-guide",
-            },
             { text: "正确使用日志记录", link: "/blog/how-to-use-logger" },
           ],
         },
