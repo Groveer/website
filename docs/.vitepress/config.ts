@@ -67,7 +67,7 @@ export default defineConfig({
   },
   buildEnd: async ({ outDir }) => {
     const sitemap = new SitemapStream({
-      hostname: "https://blog.groveer.top/",
+      hostname: "https://blog.groveer.com/",
     });
     const writeStream = createWriteStream(resolve(outDir, "sitemap.xml"));
     sitemap.pipe(writeStream);
