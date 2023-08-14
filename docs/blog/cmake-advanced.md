@@ -70,7 +70,8 @@ project(qtdemo
     LANGUAGES CXX
     HOMEPAGE_URL https://github.com/Groveer/qtdemo
     DESCRIPTION "qt program demo."
-    VERSION ${VERSION})
+    VERSION ${VERSION}
+)
 
 # 定义GNU标准安装目录，使用此定义可兼容不同发行版之间的安装目录差异
 include(GNUInstallDirs)
@@ -92,12 +93,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # 若未指定安装前缀，则指定前缀为/usr
 # 注意大部分发行版默认会将前缀设置为/usr/local，所以若需要安装到/usr，还需在编译时指定
-if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX /usr)
-endif ()
+endif()
 
 # 若未指定编译类型，则指定为Release，防止某些发行版不指定编译类型
-if (NOT CMAKE_BUILD_TYPE)
+if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose Debug or Release" FORCE)
 endif()
 

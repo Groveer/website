@@ -52,7 +52,8 @@ project(cdemo
     LANGUAGES C
     HOMEPAGE_URL https://github.com/Groveer/cdemo
     DESCRIPTION "c program demo."
-    VERSION ${VERSION})
+    VERSION ${VERSION}
+)
 
 # 定义GNU标准安装目录，使用此定义可兼容不同发行版之间的安装目录差异
 include(GNUInstallDirs)
@@ -71,9 +72,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # 若未指定安装前缀，则指定前缀为/usr
 # 注意大部分发行版默认会将前缀设置为/usr/local，所以若需要安装到/usr，还需在编译时指定
-if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX /usr)
-endif ()
+endif()
 
 # 若未指定编译类型，则指定为Release，防止某些发行版不指定编译类型
 if (NOT CMAKE_BUILD_TYPE)
@@ -94,7 +95,8 @@ set(BIN_NAME ${PROJECT_NAME})
 
 # 生成可执行文件
 add_executable(${BIN_NAME}
-    ${SRCS})
+    ${SRCS}
+)
 
 # 这里针对当前二进制定义了一个宏，保存着版本号，方便程序代码中调用，若程序中需要自定义宏变量并且在代码中使用，可参考此方法。
 # 注意CMAKE_PROJECT_XXX系列变量，某些属性是cmake帮助提供，但某些属性是project方法设置的，所以这里需要注意变量是否可用。
@@ -151,7 +153,8 @@ project(qtdemo
     LANGUAGES CXX
     HOMEPAGE_URL https://github.com/Groveer/qtdemo
     DESCRIPTION "qt program demo."
-    VERSION ${VERSION})
+    VERSION ${VERSION}
+)
 
 # 定义GNU标准安装目录，使用此定义可兼容不同发行版之间的安装目录差异
 include(GNUInstallDirs)
@@ -172,12 +175,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # 若未指定安装前缀，则指定前缀为/usr
 # 注意大部分发行版默认会将前缀设置为/usr/local，所以若需要安装到/usr，还需在编译时指定
-if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX /usr)
-endif ()
+endif()
 
 # 若未指定编译类型，则指定为Release，防止某些发行版不指定编译类型
-if (NOT CMAKE_BUILD_TYPE)
+if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose Debug or Release" FORCE)
 endif()
 
@@ -197,7 +200,8 @@ set(BIN_NAME ${PROJECT_NAME})
 
 # 生成可执行文件
 add_executable(${BIN_NAME}
-    ${SRCS})
+    ${SRCS}
+)
 
 # 这里针对当前二进制定义了一个宏，保存着版本号，方便程序代码中调用，若程序中需要自定义宏变量并且在代码中使用，可参考此方法。
 # 注意CMAKE_PROJECT_XXX系列变量，某些属性是cmake帮助提供，但某些属性是project方法设置的，所以这里需要注意变量是否可用。
