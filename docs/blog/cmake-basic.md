@@ -9,6 +9,7 @@ categories:
 cover: https://pic.3gbizhi.com/2019/0923/20190923050727803.jpg
 feature: false
 ---
+
 # {{ $frontmatter.title }}
 
 创建 CMake 项目大概需要以下几步：
@@ -79,16 +80,6 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose Debug or Release" FORCE)
 endif()
 
-# 若当前编译类型为Debug，添加asan以检测内存泄漏
-# 对应的还有CMAKE_CXX_FLAGS_RELEASE，Debug模式无需加-g参数，Release模式也无需加-O优化，默认cmake会帮我们加上
-set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -fsanitize=address -fno-omit-frame-pointer")
-
-# 某些平台可能需要手动指定mieee参数，否则会有浮点数精度问题，如sw_64
-# 使用方式：cmake -DENABLE_MIEEE
-if (DEFINED ENABLE_MIEEE)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mieee")
-endif()
-
 # 若目标库安装了.cmake文件，则可以直接使用find_package
 #find_package(PkgConfig REQUIRED)
 # 若目标库未安装.cmake文件，但是安装了.pc文件，则可以使用pkgconfig
@@ -105,14 +96,12 @@ set(BIN_NAME ${PROJECT_NAME})
 add_executable(${BIN_NAME}
     ${SRCS})
 
-# 安全编译选项，二进制需使用‘-fPIE’编译参数和‘-pie’链接参数，库需使用‘-fPIC’编译参数，两者之间有冲突不能同时使用，注意区分
-target_compile_options(${BIN_NAME} PRIVATE -fPIE)
-target_link_options(${BIN_NAME} PRIVATE -pie)
-
 # 这里针对当前二进制定义了一个宏，保存着版本号，方便程序代码中调用，若程序中需要自定义宏变量并且在代码中使用，可参考此方法。
 # 注意CMAKE_PROJECT_XXX系列变量，某些属性是cmake帮助提供，但某些属性是project方法设置的，所以这里需要注意变量是否可用。
 # 至于是使用add_compile_xxx还是target_compile_xxx，视情况而定，一个是指定所有对象，一个是指定具体的二进制
-target_compile_definitions(${BIN_NAME} PRIVATE VERSION="${CMAKE_PROJECT_VERSION}")
+# target_compile_definitions(${BIN_NAME} PRIVATE
+#     VERSION="${CMAKE_PROJECT_VERSION}"
+# )
 
 target_include_directories(${BIN_NAME} PUBLIC
 )
@@ -192,16 +181,6 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose Debug or Release" FORCE)
 endif()
 
-# 若当前编译类型为Debug，添加asan以检测内存泄漏
-# 对应的还有CMAKE_CXX_FLAGS_RELEASE，Debug模式无需加-g参数，Release模式也无需加-O优化，默认cmake会帮我们加上
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address -fno-omit-frame-pointer")
-
-# 某些平台可能需要手动指定mieee参数，否则会有浮点数精度问题，如sw_64
-# 使用方式：cmake -DENABLE_MIEEE
-if (DEFINED ENABLE_MIEEE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mieee")
-endif()
-
 # 若目标库安装了.cmake文件，则可以直接使用find_package
 #find_package(PkgConfig REQUIRED)
 # 若目标库未安装.cmake文件，但是安装了.pc文件，则可以使用pkgconfig
@@ -220,16 +199,12 @@ set(BIN_NAME ${PROJECT_NAME})
 add_executable(${BIN_NAME}
     ${SRCS})
 
-# 安全编译选项，二进制需使用‘-fPIE’编译参数和‘-pie’链接参数，库需使用‘-fPIC’编译参数，两者之间有冲突不能同时使用，注意区分
-target_compile_options(${BIN_NAME} PRIVATE -fPIE)
-target_link_options(${BIN_NAME} PRIVATE -pie)
-
 # 这里针对当前二进制定义了一个宏，保存着版本号，方便程序代码中调用，若程序中需要自定义宏变量并且在代码中使用，可参考此方法。
 # 注意CMAKE_PROJECT_XXX系列变量，某些属性是cmake帮助提供，但某些属性是project方法设置的，所以这里需要注意变量是否可用。
 # 至于是使用add_compile_xxx还是target_compile_xxx，视情况而定，一个是指定所有对象，一个是指定具体的二进制
-target_compile_definitions(${BIN_NAME} PRIVATE
-    VERSION="${CMAKE_PROJECT_VERSION}"
-)
+# target_compile_definitions(${BIN_NAME} PRIVATE
+#     VERSION="${CMAKE_PROJECT_VERSION}"
+# )
 
 # Qt 从5.15版本开始，可以直接使用Qt::Core，而不需要加版本号，但为了兼容性，把版本号加上为好
 target_include_directories(${BIN_NAME} PUBLIC
