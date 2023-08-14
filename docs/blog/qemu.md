@@ -9,6 +9,7 @@ categories:
 cover: https://pic.3gbizhi.com/2020/1010/20201010015227581.jpg
 feature: false
 ---
+
 # {{ $frontmatter.title }}
 
 作为开发人员，往往需要在各种环境中进行调试，由于硬件资源的限制，调试环境的配置，往往需要花费大量的时间，本篇文章旨在使用 qemu-kvm 来配置各种调试环境，并且合理使用快照功能来实现各个环境的切换。
@@ -75,7 +76,31 @@ feature: false
    5. -smp 参数指定虚拟机所使用的 CPU 个数，可以自行调整。
    6. -enable-kvm 参数使用 kvm 内核模块，如果不使用，虚拟机性能会非常差，如果开启失败，请检查 bios 设置中的虚拟机技术支持是否开启。
 
-3. 安装完成后，以后每次启动可以去掉`-cdrom`参数。
+3. 安装完成后，以后每次启动可以去掉`-boot`和`-cdrom`参数:
+
+   ```shell
+   qemu-system-x86_64 -drive file=<disk_image> -m 4G -smp 4 -enable-kvm
+   ```
+
+## 启用 ssh (端口转发)
+
+添加`nic`参数：
+
+```shell
+-nic user,hostfwd=tcp::60022-:22
+```
+
+然后就可以使用 60022 端口：
+
+```shell
+ssh guest-user@127.0.0.1 -p 60022
+```
+
+若是多个端口，可以重复添加`hostfwd`参数，如`vnc`：
+
+```shell
+-nic user,hostfwd=tcp::60022-:22,hostfwd=tcp::5900-:5900
+```
 
 ## 快照管理
 
