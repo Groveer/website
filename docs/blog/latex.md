@@ -8,6 +8,7 @@ categories:
 cover: https://pic.3gbizhi.com/2020/0915/20200915093843136.jpg
 feature: false
 ---
+
 # {{ $frontmatter.title }}
 
 ## 安装基础软件
@@ -15,7 +16,7 @@ feature: false
 :::details ArchLinux
 
 ```bash
-yay -S plantuml inkscape python-pygments texlive-core texlive-bibtexextra texlive-latexextra texlive-langchinese texlive-langjapanese
+yay -S plantuml python-pygments texlive-core texlive-bibtexextra texlive-latexextra texlive-langchinese texlive-langjapanese
 ```
 
 可能需要一些字体：
@@ -29,7 +30,7 @@ yay -S noto-fonts-cjk
 :::details Deepin/Ubuntu
 
 ```bash
-sudo apt install plantuml inkscape python3-pygments make texlive-latex-base texlive-lang-chinese texlive-luatex texlive-latex-recommended texlive-latex-extra
+sudo apt install plantuml python3-pygments make texlive-latex-base texlive-lang-chinese texlive-luatex texlive-latex-recommended texlive-latex-extra
 ```
 
 :::
@@ -140,6 +141,9 @@ lualatex "-shell-escape" \
 
 > 需要注意的是，Deepin 系统下的 plantuml 版本可能比较老旧（/usr/share/plantuml/plantuml.jar），可在其他系统上拷贝较新的版本或使用本文章附件。
 
+> 若需要`lmroman`字体，请在附件中自取。
+
 ### 附件
 
-* [plantuml 包](./rc/plantuml-1.2022.6.jar)
+- [plantuml 包](./rc/plantuml-1.2022.6.jar)
+- [lmroman 字体](./rc/lmroman.tar.gz)
