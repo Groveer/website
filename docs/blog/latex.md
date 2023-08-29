@@ -16,13 +16,19 @@ feature: false
 :::details ArchLinux
 
 ```bash
-yay -S plantuml python-pygments texlive-core texlive-bibtexextra texlive-latexextra texlive-langchinese texlive-langjapanese
+yay -S texlive-luatex texlive-latexrecommended texlive-fontsrecommended texlive-binextra texlive-latexextra texlive-langchinese texlive-langjapanese
 ```
 
-可能需要一些字体：
+`pygments` 可以用`pip`安装：
 
 ```bash
-yay -S noto-fonts-cjk
+pip install pygments
+```
+
+也可以使用系统中的包：
+
+```bash
+yay -S python-pygments
 ```
 
 :::
@@ -30,7 +36,7 @@ yay -S noto-fonts-cjk
 :::details Deepin/Ubuntu
 
 ```bash
-sudo apt install plantuml python3-pygments make texlive-latex-base texlive-lang-chinese texlive-luatex texlive-latex-recommended texlive-latex-extra
+sudo apt install python3-pygments make texlive-latex-base texlive-lang-chinese texlive-luatex texlive-latex-recommended texlive-latex-extra
 ```
 
 :::
