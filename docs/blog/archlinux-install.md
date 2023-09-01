@@ -8,6 +8,7 @@ categories:
 cover: https://pic.3gbizhi.com/2020/0925/20200925122821237.jpg
 feature: true
 ---
+
 # {{ $frontmatter.title }}
 
 ArchLinux 安装不是最难的，但也不是傻瓜式难度安装（有手就行），安装 ArchLinux 不仅需要动动手指，还需要有一台电脑，有一个 U 盘，还必须有可以访问互联网的网络。
@@ -179,9 +180,10 @@ source file 选择 iso 镜像，Target device 选择 U 盘，点击 Write 进行
   fdisk /dev/sda
   ```
 
-  1. 输入`g`，新建 GPT 分区表
-  2. 输入`w`，保存修改，这个操作会抹掉磁盘所有数据，慎重执行！
-  3. 对`/dev/sdb`做同样处理。
+  1. 若是 UEFI 引导，输入`g`，新建 GPT 分区表
+  2. 若是 MBR 引导，输入`o`，新建 MBR 分区表
+  3. 输入`w`，保存修改，这个操作会抹掉磁盘所有数据，慎重执行！
+  4. 对`/dev/sdb`做同样处理。
 
 - 分区创建
   1 扇区 = 512 字节
@@ -190,30 +192,21 @@ source file 选择 iso 镜像，Target device 选择 U 盘，点击 Write 进行
   fdisk /dev/sda
   ```
 
-  1. 新建 EFI System 分区（非 UEFI 引导可以省略此步）
+  1. 新建 EFI System 分区（**非 UEFI 引导可以省略此步**）
      1. 输入`n`
      2. 选择分区区号，直接`Enter`，使用默认值，fdisk 会自动递增分区号
      3. 分区开始扇区号，直接`Enter`，使用默认值
-     4. 分区结束扇区号，输入`+512M`（推荐大小）
-     5. 输入`t`修改刚刚创建的分区类型
-     6. 选择分区号，直接`Enter`， 使用默认值，fdisk 会自动选择刚刚新建的分区
-     7. 输入`1`，使用 EFI System 类型
+     4. 分区结束扇区号，输入`+512M`（推荐大小），输入后`Enter`
   2. 新建 Linux root (x86-64) 分区
      1. 输入`n`
      2. 选择分区区号，直接`Enter`，使用默认值，fdisk 会自动递增分区号
      3. 分区开始扇区号，直接`Enter`，使用默认值
-     4. 分区结束扇区号，这里要考虑预留给 swap 分区空间，计算公式：root 分区结束扇区号 = 磁盘结束扇区号 - 分配给 swap 分区的空间 (GB) _1024_ 1024 \* 1024 / 512，输入后`Enter`
-     5. 输入`t`修改刚刚创建的分区类型
-     6. 选择分区号，直接`Enter`， 使用默认值，fdisk 会自动选择刚刚新建的分区
-     7. 输入`23`，使用 Linux root (x86-64) 类型
+     4. 分区结束扇区号，这里要考虑预留给 swap 分区空间，计算公式：root 分区结束扇区号 = 磁盘结束扇区号 - 分配给 swap 分区的空间 (GB) _1024_ 1024 \* 1024 / 512，输入后`Enter`，**若使用交换文件或 zram 可不预留交换分区**
   3. 新建 Linux swap 分区（使用[交换文件](<https://wiki.archlinux.org/title/Swap_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%BA%A4%E6%8D%A2%E6%96%87%E4%BB%B6>)可以省略此步）
      1. 输入`n`
      2. 选择分区区号，直接`Enter`，使用默认值，fdisk 会自动递增分区号
-     3. 分区开始扇区号，直接 Enter，使用默认值
+     3. 分区开始扇区号，直接 `Enter`，使用默认值
      4. 分区结束扇区号，比如`+8G`，这里直接使用默认值，剩下的空间均给 swap 分区
-     5. 输入`t`修改刚刚创建的分区类型
-     6. 选择分区号，直接`Enter`， 使用默认值，fdisk 会自动选择刚刚新建的分区
-     7. 输入`19`，使用 Linux swap 类型
   4. 保存新建的分区
      1. 输入`w`
 
@@ -228,9 +221,6 @@ source file 选择 iso 镜像，Target device 选择 U 盘，点击 Write 进行
      2. 选择分区区号，直接`Enter`，使用默认值，fdisk 会自动递增分区号
      3. 分区开始扇区号，直接`Enter`，使用默认值
      4. 分区结束扇区号，直接`Enter`，使用默认值，使用全部空间
-     5. 输入`t`修改刚刚创建的分区类型
-     6. 选择分区号，直接`Enter`， 使用默认值，fdisk 会自动选择刚刚新建的分区
-     7. 输入`23`，使用 Linux root (x86-64) 类型
   2. 保存新建的分区
      1. 输入`w`
 
@@ -239,7 +229,7 @@ source file 选择 iso 镜像，Target device 选择 U 盘，点击 Write 进行
 - 格式化 EFI System 分区：
 
   ```shell
-  mkfs.fat -F32 /dev/sda1
+  mkfs.vfat /dev/sda1
   ```
 
   如果格式化失败，可能是磁盘设备存在 Device Mapper，一般来说使用了 lvm，会存在这种情况
@@ -307,6 +297,8 @@ reflector --country China --protocol http --protocol https --latest 5 --save /et
 
 ### 安装 Arch 和 Package Group
 
+虚拟机用户不需要安装`linux-firmware`
+
 ```shell
 pacstrap /mnt base base-devel linux linux-firmware
 ```
@@ -327,6 +319,12 @@ arch-chroot /mnt
 
 ```shell
 pacman -S vim networkmanager sudo
+```
+
+开启 network：
+
+```shell
+systemctl enable NetworkManager
 ```
 
 ### 本地化
@@ -367,6 +365,8 @@ pacman -S vim networkmanager sudo
   ```
 
 ### 安装 Microcode
+
+虚拟机用户略过此步。
 
 - AMD CPU：
 
@@ -410,6 +410,12 @@ passwd
 useradd -m -g wheel <username>
 ```
 
+修改sudoers，将下面这一行取消注释：
+
+```shell
+%wheel ALL=(ALL:ALL) ALL
+```
+
 修改密码：
 
 ```shell
@@ -427,7 +433,7 @@ reboot
 
 使用 root 账户登录后：
 
-- 开启时间自动同步
+- 开启时间自动同步并修改时区
 
   ```shell
   timedatectl set-ntp true
