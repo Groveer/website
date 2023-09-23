@@ -9,6 +9,7 @@ title: 目录
       1. [系统安装](archlinux-install)
       2. [系统配置](archlinux-config)
       3. [安装 Nvidia 闭源驱动](archlinux-install-nvidia)
+      4. [WSL2安装Archlinux](wsl2-archlinux)
    2. Deepin
       1. [系统修复](deepin-repair-system)
       2. [正确使用日志记录](how-to-use-logger)

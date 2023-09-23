@@ -120,6 +120,7 @@ function sidebarBlog() {
               text: "安装 Nvidia 闭源驱动",
               link: "/blog/archlinux-install-nvidia",
             },
+            { text: "WSL2安装ArchLinux", link: "/blog/wsl2-archlinux" },
           ],
         },
         {
