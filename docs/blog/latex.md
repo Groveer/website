@@ -13,13 +13,49 @@ feature: false
 
 ## 安装基础软件
 
-:::details ArchLinux
+1. 参考texlive[官方文档](https://tug.org/texlive/quickinstall.html)进行安装：
 
 ```bash
-yay -S texlive-luatex texlive-latexrecommended texlive-fontsrecommended texlive-binextra texlive-latexextra texlive-langchinese texlive-langjapanese
+cd /tmp # working directory of your choice
+wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz # or curl instead of wget
+zcat < install-tl-unx.tar.gz | tar xf -
+cd install-tl-*
+perl ./install-tl --scheme=basic --no-interaction -repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet # as root
 ```
 
-`pygments` 可以用`pip`安装：
+这里只是安装了一个基本的latex，想要正常使用还需要进行配置和安装其他的包。
+
+可以在环境变量中添加以下内容：
+
+```bash
+if [ -d "/usr/local/texlive/" ]; then
+	export MANPATH=$MANPATH:/usr/local/texlive/2023/texmf-dist/doc/man
+	export INFOPATH=$INFOPATH:/usr/local/texlive/2023/texmf-dist/doc/info
+	export PATH=$PATH:/usr/local/texlive/2023/bin/x86_64-linux
+fi
+```
+
+使用国内源速度更快：
+
+```bash
+sudo tlmgr option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet
+```
+
+刷新环境变量皆可执行`lualatex`和`xelatex`命令了，在编译`tex`文件过程中若遇到`xxx`文件不存在时，可以先用`info`命令查询相关的包，然后用`install`命令安装该包。
+
+```bash
+tlmgr info ctexart.cls
+```
+
+找到这个文件在`ctex`包中，然后直接安装：
+
+```
+sudo tlmgr install ctex
+```
+
+2. 安装`python`的包`pygments`：
+
+可以用`pip`安装：
 
 ```bash
 pip install pygments
@@ -27,19 +63,17 @@ pip install pygments
 
 也可以使用系统中的包：
 
+ArchLinux:
+
 ```bash
 yay -S python-pygments
 ```
 
-:::
-
-:::details Deepin/Ubuntu
+Debian/Ubuntu:
 
 ```bash
-sudo apt install python3-pygments make texlive-latex-base texlive-lang-chinese texlive-luatex texlive-latex-recommended texlive-latex-extra
+sudo apt install python3-pygments
 ```
-
-:::
 
 ## 安装模板
 
@@ -68,7 +102,7 @@ sudo make install
 
 ## 打中文支持补丁
 
-:::details ArchLinux
+这里是对plantuml打补丁，不需要plantuml支持可以略过此步：
 
 ```patch
 --- /usr/share/texmf-dist/tex/lualatex/plantuml/plantuml.lua    2022-04-17 16:12:47.000000000 +0800
@@ -87,35 +121,8 @@ sudo make install
 ```
 
 ```bash
-sudo  patch --verbose /usr/share/texmf-dist/tex/lualatex/plantuml/plantuml.lua < patch
+sudo patch --verbose /usr/local/texlive/2023/texmf-dist/tex/lualatex/plantuml/plantuml.lua < patch
 ```
-
-:::
-
-:::details Deepin/Ubuntu
-
-```pacth
---- /usr/share/texlive/texmf-dist/tex/lualatex/plantuml/plantuml.lua    2018-03-09 06:56:58.000000000 +0800
-+++ /tmp/plantuml.lua   2022-08-10 15:19:58.000000000 +0800
-@@ -21,8 +21,10 @@
-     return
-   end
-
-+  local lang = os.getenv("LANG")
-+
-   texio.write("Executing PlantUML... ")
--  local cmd = "java -jar " .. plantUmlJar .. " -t"
-+  local cmd = "LC_CTYPE=" .. lang .. " java -jar " .. plantUmlJar .. " -t"
-   if (mode == "latex") then
-     cmd = cmd .. "latex:nopreamble"
-   else
-```
-
-```bash
-sudo patch --verbose /usr/share/texlive/texmf-dist/tex/lualatex/plantuml/plantuml.lua < patch
-```
-
-:::
 
 ## 构建
 
