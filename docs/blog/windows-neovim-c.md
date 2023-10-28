@@ -21,54 +21,88 @@ feature: true
 
 > 由于 Neovim 插件和一些配置需要访问[Github](https://github.com/)，若无法访问，请自行百度`科学上网`和`DNS解析`，另不推荐使用镜像站或[Gitee](https://gitee.com/)，因为某些插件可能并没有被同步。
 
-> 本篇文章多次涉及到`环境变量`的设置，关于 Windows 环境变量设置，网上有很多教程，这里不再赘述。并且本文尽量避免环境变量多次生效，先把软件安装好，配置好环境变量后，直接重启电脑。
+> 本篇文章多次到`环境变量`的设置，关于 Windows 环境变量设置，网上有很多教程，这里不再赘述。
 
-## 基础软件包安装
+## 系统基础环境配置
 
-本篇文章涉及到的安装方式有 3 种：
+可以创建一个目录用来存放工具，并且将这个目录添加进系统环境变量：
 
-1. 应用商店，可能需要微软账户
-2. 普通安装，一般是双击 exe，或者将 exe 文件放到指定目录，也有压缩文件，解压即可
-3. 命令行安装，需要先安装微软终端程序
+```powershell
+D:\Program Files\nvim-tools
+```
 
-> 建议按本文章先后顺序进行安装。
+后续所有命令都是在`PowerShell`中执行，`WindowsPowerShell`亦可。记得配置完环境变量后需要重新打开`PowerShell`生效。
 
-### 应用商店安装
+### 配置`winget`国内源
 
-打开 Microsoft Store，搜索`PowerShell`和`Windows Terminal`，并进行安装。
+```powershell
+winget source remove winget
+winget source add winget https://mirrors.ustc.edu.cn/winget-source
+```
 
-### 普通安装
-
-#### zip & unzip
+### zip & unzip
 
 1. 下载[附件](rc/unzip-command.zip)
-2. 解压后直接丢到`C:\Windows`目录即可
+2. 解压后直接丢到`D:\Program Files\nvim-tools`目录即可
 
-#### wget
+### gzip
+
+1. 下载[Binaries](https://gnuwin32.sourceforge.net/packages/gzip.htm)压缩包
+2. 解压后将`gzip.exe`放在`D:\Program Files\nvim-tools`目录
+
+### wget
 
 1. 下载[wget.exe](https://eternallybored.org/misc/wget/)
-2. 将`wget.exe`放在`C:\Windows`目录
+2. 将`wget.exe`放在`D:\Program Files\nvim-tools`目录
 
-#### tree-sitter
+### tree-sitter
 
 1. 下载[tree-sitter-windows-x64.gz](https://github.com/tree-sitter/tree-sitter/releases)
-2. 解压文件将`tree-sitter.exe`文件放在`C:\Windows`目录
+2. 解压文件将`tree-sitter.exe`文件放在`D:\Program Files\nvim-tools`目录
 
-#### ripgrep
+### ripgrep
 
 1. 下载[ripgrep](https://github.com/BurntSushi/ripgrep/releases)的 zip 文件
-2. 将解压后的文件夹添加进环境变量
+2. 解压文件将`rg.exe`文件放在`D:\Program Files\nvim-tools`目录
 
-> 如果嫌弃文件夹名称太长，也可重命名后再添加环境变量。
+### fnm
 
-#### nvm
+1. 下载[fnm-windows.zip](https://github.com/Schniz/fnm/releases)
+2. 解压文件将`fnm.exe`文件放在`D:\Program Files\nvim-tools`目录
 
-1. 下载[nvm-setup.exe](https://github.com/coreybutler/nvm-windows/releases)
-2. 双击 exe 文件安装，一直下一步即可
+配置 fnm 国内源：
 
-> 不建议更改安装路径，可能涉及权限问题导致后面安装 nodejs 和 npm 比较麻烦。
+```powershell
+explorer.exe $PROFILE
+```
 
-#### python
+打开的文件添加：
+
+```powershell
+fnm env --use-on-cd | Out-String | Invoke-Expression
+```
+
+重启`PowerShell`，安装 nodejs：
+
+```powershell
+fnm install --latest
+fnm default 21
+fnm use 21
+```
+
+配置 nodejs 国内源：
+
+```powershell
+npm config set registry https://registry.npmmirror.com/
+```
+
+安装 neovim 支持：
+
+```powershell
+npm install -g neovim
+```
+
+### python
 
 1. 下载[python](https://www.python.org/downloads/)
 2. 双击 exe 文件安装
@@ -81,13 +115,19 @@ feature: true
 
 > 建议自定义安装，注意勾选`pip`。
 
-安装常用工具：
+配置 pip 国内源：
 
 ```powershell
-pip install pynvim ninja
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-#### MSBuild
+安装 nvim 工具：
+
+```powershell
+pip install pynvim
+```
+
+### MSBuild
 
 1. 下载[Visual Studio 2022 生成工具](https://visualstudio.microsoft.com/zh-hans/downloads/)
 2. 注意**不是**`Visual Studio 2022`，`Visual Studio 2022`是大家熟悉的 IDE
@@ -97,73 +137,59 @@ pip install pynvim ninja
 5. 在弹出的界面，左侧勾选`使用 C++ 的桌面开发`，右侧按下图勾选即可
    ![安装 C++ 编译器和 SDK](./img/windows_nvim/msbuild_c++.jpg)
 
-### 命令行安装
+安装完成后，系统开始菜单应该有`Developer PowerShell for VS 2022`，右键->打开文件位置->右键文件->属性->快捷方式，复制`目标(T):`里面的内容：
 
-#### Neovim
+![terminal](./img/windows_nvim/select_terminal.jpg)
+
+```powershell
+explorer.exe $PROFILE
+```
+
+打开的文件添加刚刚复制的内容，并进行调整，最终结果为：
+
+```powershell
+Import-Module "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\Microsoft.VisualStudio.DevShell.dll"
+Enter-VsDevShell e344e64a -DevCmdArguments '-arch=x64 -no_logo'
+```
+
+其中`-DevCmdArguments`参数是手动添加的，目的是调整架构，为后面编译`Neovim`插件做准备。
+
+最终的配置文件内容：
+
+```powershell
+# Install-Module posh-git -Scope CurrentUser
+# 引入 git 模块，引入之前需要先执行上面的命令，若报错需要执行：set-executionpolicy remotesigne
+Import-Module posh-git
+# 添加开发环境
+Import-Module "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\Microsoft.VisualStudio.DevShell.dll"
+Enter-VsDevShell e344e64a -DevCmdArguments '-arch=x64 -no_logo'
+# 设置 Ctrl+D 退出终端
+Set-PSReadLineKeyHandler -Key 'Ctrl+d' -Function DeleteCharOrExit
+# 设置 fnm 环境变量
+fnm env --use-on-cd | Out-String | Invoke-Expression
+```
+
+### Neovim
 
 查看[Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)官方文档，执行：
 
 ```powershell
-winget install Neovim.Neovim
+winget install Neovim.Neovim -s winget
 ```
 
-#### Git
+### Git
 
 查看[Git](https://git-scm.com/download/win)官方文档，执行：
 
 ```powershell
-winget install --id Git.Git -e --source winget
+winget install Git.Git -s winget
 ```
 
-#### nodejs npm
-
-1. nodejs 和 npm 一般是一起安装的，并且使用 nvm 可以多版本管理，但是在安装前要简单配置下
-2. 配置一下源地址可以加速下载，特别是中国地区，按[官方文档](https://github.com/coreybutler/nvm-windows#usage)进行配置：
+添加`PowerShell` git 支持：
 
 ```powershell
-nvm node_mirror https://npmmirror.com/mirrors/node/
-nvm npm_mirror https://npmmirror.com/mirrors/npm/
+Install-Module posh-git -Scope CurrentUser
 ```
-
-3. 安装 nodejs 和 npm：
-
-   1. 查看本地已装版本：
-
-   ```powershell
-   nvm ls
-   ```
-
-   2. 查看远程可用版本：
-
-   ```powershell
-   nvm ls available
-   ```
-
-   3. 安装最新版本：
-
-   ```powershell
-   nvm install 19.4.0
-   ```
-
-   4. 安装完会提示使用安装的版本：
-
-   ```powershell
-   nvm use 19.4.0
-   ```
-
-   5. 修改默认 npm 地址，使用国内源能加快访问速度：
-
-   ```powershell
-   npm config set registry https://registry.npmmirror.com
-   ```
-
-   6. 安装 neovim 支持：
-
-   ```powershell
-   npm install -g neovim
-   ```
-
-> 若使用`nvm`命令提示不命令行、函数、脚本或者可执行程序的名称，可能需要重启系统或 Windows 资源管理器
 
 ## 开发环境配置
 
@@ -181,33 +207,29 @@ User git
 
 ### Neovim 配置
 
-1. Neovim 配置对于刚接触的人可能比较复杂，其实就是配置一些插件，大部分插件的 github 都有其使用说明，这里为了方便，可以直接使用本人的[配置](https://github.com/Groveer/nvimdots)，执行：
+1. Neovim 配置对于刚接触的人可能比较复杂，其实就是配置一些插件，大部分插件的 github 都有其使用说明，这里为了方便，可以直接使用本人的[配置](https://github.com/Groveer/NvChad)，执行：
 
 ```powershell
-git clone https://github.com/Groveer/nvimdots.git
+git clone https://github.com/Groveer/NvChad.git
 ```
 
-2. 创建软件，Neovim 读取配置是在固定的目录：
+2. 创建软件，Neovim 读取配置是在固定的目录，在`cmd`中执行：
+
+按下`Win+r`键，输入`cmd`运行，执行下面的命令：
 
 ```cmd
-mklink /d C:\Users\grove\AppData\Local\nvim D:\Project\nvimdots
+mklink /d C:\Users\Administrator\AppData\Local\nvim D:\Project\NvChad
 ```
 
-其中，`grove`是本地账户名，`D:\Project\nvimdots`是 git clone 下来的项目
+其中，`Administrator`是本地账户名，`D:\Project\nvimdots`是 git clone 下来的项目
 
 > 注意，本条命令要在 cmd 中执行，在 powershell 是没有该命令的！
 
-3. 本人的 Neovim 配置使用 Lazy.nvim 进行插件管理，首次启动会进行安装插件，因为默认使用 ssh 协议，请确保 git 使用 ssh 协议能够正确访问 github：
+3. 本人的 Neovim 配置使用 Lazy.nvim 进行插件管理，首次启动会进行安装插件：
 
 ```powershell
 nvim
 ```
-
-4. 初次启动可能会提示找不到 C 编译器，此时可以使用生成工具提供的终端进行启动：
-
-![terminal](./img/windows_nvim/select_terminal.jpg)
-
-> 当然也可以对其启动目录进行修改，像本人就修改为`D:/Project`目录
 
 5. 一般来说，进行了上面的软件安装，Neovim 所需的程序就齐全了，当然也可以执行命令进行检查：
 
@@ -225,7 +247,7 @@ nvim
 
 ### 扩展字体配置
 
-1. 下载[Maple](https://github.com/subframe7536/Maple-font/releases/download/v6.2/MapleMono-SC-NF.zip)字体
+1. 下载[Maple](https://github.com/subframe7536/Maple-font/releases)字体
 2. 解压文件后全选 ttf 文件，然后右键安装
 3. 终端：设置->默认值->字体，选择`Maple Mono SC NF`，保存弹窗提示忽略
 4. 重启终端，进入 nvim，正常显示图标字体
