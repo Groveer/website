@@ -8,8 +8,10 @@
 mixed-port: 7890
 allow-lan: true
 mode: Rule
-log-level: info
+ipv6: true
+log-level: warning
 external-controller: :9090
+external-ui: /usr/share/yacd/
 ```
 
 ## clash 使用数据集及规则集
@@ -188,6 +190,7 @@ tun:
   enable: true
   stack: system
   auto-route: true
+  auto-redir: true
   auto-detect-interface: true
   dns-hijack:
     - any:53
@@ -199,15 +202,18 @@ dns:
   enable: true
   listen: 0.0.0.0:53
   use-hosts: true
-  # ipv6: false # when the false, response to AAAA questions will be empty
+  enhanced-mode: fake-ip # or redir-host (not recommended)
+  fake-ip-range:
+    198.18.0.1/16 # Fake IP addresses pool CIDR
+    #ipv6: true # when the false, response to AAAA questions will be empty
 
   # These nameservers are used to resolve the DNS nameserver hostnames below.
   # Specify IP addresses only
   default-nameserver:
     - 223.5.5.5
-  enhanced-mode: fake-ip # or redir-host (not recommended)
-  fake-ip-range: 198.18.0.1/16 # Fake IP addresses pool CIDR
-  # use-hosts: true # lookup hosts and return IP record
+    - 119.29.29.29
+    - 180.76.76.76
+    - 1.1.1.1
 
   # Hostnames in this list will not be resolved with fake IPs
   # i.e. questions to these domain names will always be answered with their
@@ -215,58 +221,6 @@ dns:
   fake-ip-filter:
     - "*.lan"
     - "*.local"
-    - dns.msftncsi.com
-    - www.msftncsi.com
-    - www.msftconnecttest.com
-    - stun.*.*.*
-    - stun.*.*
-    - miwifi.com
-    - music.163.com
-    - "*.music.163.com"
-    - "*.126.net"
-    - api-jooxtt.sanook.com
-    - api.joox.com
-    - joox.com
-    - y.qq.com
-    - "*.y.qq.com"
-    - streamoc.music.tc.qq.com
-    - mobileoc.music.tc.qq.com
-    - isure.stream.qqmusic.qq.com
-    - dl.stream.qqmusic.qq.com
-    - aqqmusic.tc.qq.com
-    - amobile.music.tc.qq.com
-    - "*.xiami.com"
-    - "*.music.migu.cn"
-    - music.migu.cn
-    - netis.cc
-    - router.asus.com
-    - repeater.asus.com
-    - routerlogin.com
-    - routerlogin.net
-    - tendawifi.com
-    - tendawifi.net
-    - tplinklogin.net
-    - tplinkwifi.net
-    - tplinkrepeater.net
-    - "*.ntp.org.cn"
-    - "*.openwrt.pool.ntp.org"
-    - "*.msftconnecttest.com"
-    - "*.msftncsi.com"
-    - localhost.ptlogin2.qq.com
-    - "*.*.*.srv.nintendo.net"
-    - "*.*.stun.playstation.net"
-    - xbox.*.*.microsoft.com
-    - "*.ipv6.microsoft.com"
-    - "*.*.xboxlive.com"
-    - speedtest.cros.wr.pvp.net
-    - "+.mtrx.nz"
-    - "+.matrix.org"
-    - "+.letsencrypt.org"
-    - "+.justforlxz.com"
-    - "+.mkacg.com"
-    - "+.uniontech.com"
-    - "+.deepin.com"
-    - "+.deepin.org"
 
   # Supports UDP, TCP, DoT, DoH. You can specify the port to connect to.
   # All DNS questions are sent directly to the nameserver, without proxies
@@ -274,9 +228,7 @@ dns:
   nameserver:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
-    - https://dns.google/dns-query
-    - https://223.5.5.5/dns-query
-    # - '8.8.8.8#en0'
+    - https://cloudflare-dns.com/dns-query
 
   # When `fallback` is present, the DNS server will send concurrent requests
   # to the servers in this section along with servers in `nameservers`.
@@ -285,6 +237,7 @@ dns:
   fallback:
     - tls://1.0.0.1:853
     - tls://8.8.4.4:853
+    - https://dns.google/dns-query
     - https://doh.opendns.com/dns-query
 
   # If IP addresses resolved with servers in `nameservers` are in the specified
@@ -303,27 +256,20 @@ dns:
     geoip-code: CN
     ipcidr:
       - 0.0.0.0/32
-    domain:
-      - +.google.com
-      - +.facebook.com
-      - +.twitter.com
-      - +.youtube.com
-      - +.xn--ngstr-lra8j.com
-      - +.google.cn
-      - +.googleapis.cn
-      - +.googleapis.com
-      - +.gvt1.com
-  # Lookup domains via specific nameservers
-  nameserver-policy:
-    "+.uniontech.com": "dhcp://en0"
-    "+.deepin.org": "dhcp://en0"
-    "+.deepin.com": "dhcp://en0"
 ```
 
-最后三行设置哪些域名使用本地网口进行访问，而不是 tun 网口，注意，`en0` 需要改为你自己的网卡名：
+若配置内网走本地 dhcp，而不是通过代理访问，可以在`dns`配置加上：
+
+```yaml
+dns:
+  # Lookup domains via specific nameservers
+  nameserver-policy:
+    "+.internal.com": "dhcp://eno1"
+    "+.internal.org": "dhcp://eno1"
+```
+
+注意，`eno1` 需要改为你自己的网卡名：
 
 ```bash
 ip a
 ```
-
-## 上面三个配置组成完整的配置
