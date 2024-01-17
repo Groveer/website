@@ -1,9 +1,4 @@
 import { defineConfig } from "vitepress";
-import { createWriteStream } from "node:fs";
-import { resolve } from "node:path";
-import { SitemapStream } from "sitemap";
-
-const links = [];
 
 export default defineConfig({
   lang: "zh-CN",
@@ -26,6 +21,11 @@ export default defineConfig({
       },
     ],
   ],
+
+  sitemap: {
+    hostname: "https://blog.groveer.com",
+    lastmodDateOnly: false
+  },
 
   themeConfig: {
     nav: nav(),
@@ -54,24 +54,6 @@ export default defineConfig({
     search: {
       provider: "local"
     },
-  },
-  transformHtml: (_, id, { pageData }) => {
-    if (!/[\\/]404\.html$/.test(id))
-      links.push({
-        // you might need to change this if not using clean urls mode
-        url: pageData.relativePath.replace(/((^|\/)index)?\.md$/, "$2"),
-        lastmod: pageData.lastUpdated,
-      });
-  },
-  buildEnd: async ({ outDir }) => {
-    const sitemap = new SitemapStream({
-      hostname: "https://blog.groveer.com/",
-    });
-    const writeStream = createWriteStream(resolve(outDir, "sitemap.xml"));
-    sitemap.pipe(writeStream);
-    links.forEach((link) => sitemap.write(link));
-    sitemap.end();
-    await new Promise((r) => writeStream.on("finish", r));
   },
 });
 
