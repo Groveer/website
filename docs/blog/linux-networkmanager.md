@@ -1,15 +1,4 @@
----
-title: NetworkManager 一些技巧
-date: 2023-01-09 11:48:39
-tags:
-  - Linux
-  - NetworkManager
-categories:
-  - Linux
-cover: https://pic.3gbizhi.com/2020/1214/20201214113105310.jpg
-feature: false
----
-# {{ $frontmatter.title }}
+# NetworkManager 一些技巧
 
 NetworkManager 是一个为系统提供检测和配置功能以便自动连接到网络的程序。NetworkManager 的功能对无线和有线网络都很有用。
 

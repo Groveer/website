@@ -1,15 +1,4 @@
----
-title: ArchLinux 安装 Nvidia 驱动
-date: 2022-08-05 14:46:32
-tags:
-  - Linux
-categories:
-  - ArchLinux
-cover: https://pic.3gbizhi.com/2020/1011/20201011011357445.jpg
-feature: false
----
-
-# {{ $frontmatter.title }}
+# ArchLinux 安装 Nvidia 驱动
 
 Nvidia 的开源驱动(nouveau)是作为逆向工程开发的，性能毕竟比不上闭源驱动，本篇教程将教大家在 ArchLinux 上安装闭源驱动。
 

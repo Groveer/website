@@ -1,14 +1,4 @@
----
-title: 使用 systemd 实现自动登陆
-date: 2022-09-16 15:59:35
-tags:
-  - Linux
-categories:
-  - Linux
-cover: https://pic.3gbizhi.com/2019/0909/20190909043921431.jpg
-feature: false
----
-# {{ $frontmatter.title }}
+# 使用 systemd 实现自动登陆
 
 systemd 是一个 Linux 系统基础组件的集合，提供了一个系统和服务管理器，运行为 PID 1 并负责启动其它程序。使用 systemd 实现自动登录，其实就是开机自启 getty 服务，但默认的服务需要进行修改才能实现该功能。
 

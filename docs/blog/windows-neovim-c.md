@@ -1,17 +1,4 @@
----
-title: Neovim + CMake + MSBuild 配置 Windows 开发环境
-date: 2023-01-21 10:16:49
-tags:
-  - Windows
-  - Neovim
-  - C/C++
-categories:
-  - Windows
-cover: https://pic.3gbizhi.com/2020/0817/20200817121447528.png
-feature: true
----
-
-# {{ $frontmatter.title }}
+# Neovim + CMake + MSBuild 配置 Windows 开发环境
 
 为了与 Linux 拥有一致的开发体验，特在此记录：在 Windows 上使用 Neovim + CMake + MSBuild 搭建 C/C++ 环境。
 

@@ -1,8 +1,4 @@
----
-title: 目录
----
-
-# {{ $frontmatter.title }}
+# 目录
 
 1. Linux
    1. ArchLinux
@@ -16,8 +12,7 @@ title: 目录
    3. [自动登陆](linux-auto-login)
    4. [挂载小技巧](linux-mount)
    5. [网络管理](linux-networkmanager)
-   6. [分区 & 格式化](linux-partition-format)
-   7. [zram & swap](linux-zram)
+   6. [zram & swap](linux-zram)
 2. Develop
    1. [CMake 基础用法](cmake-basic)
    2. [CMake 进阶用法](cmake-advanced)
@@ -28,6 +23,5 @@ title: 目录
    3. [Qemu 工具](qemu)
    4. [clash 配置](clash)
 4. IDE
-   1. [Vim 配置](vim)
-   2. [VsCode 配置](vscode)
-   3. [Windows Neovim 配置](windows-neovim-c)
+   1. [VsCode 配置](vscode)
+   2. [Windows Neovim 配置](windows-neovim-c)

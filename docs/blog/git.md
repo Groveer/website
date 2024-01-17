@@ -1,15 +1,4 @@
----
-title: git 命令使用方法
-date: 2022-08-13 19:46:11
-tags:
-  - Tool
-  - Windows
-categories:
-  - Tool
-cover: https://pic.3gbizhi.com/2020/1104/20201104025420867.jpg
-feature: false
----
-# {{ $frontmatter.title }}
+# git 命令使用方法
 
 本文章只提供一些不常见的用法，对于 git 基本用法，网上教程很多，这里不再赘述。
 

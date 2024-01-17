@@ -114,7 +114,6 @@ function sidebarBlog() {
         { text: "自动登陆", link: "/blog/linux-auto-login" },
         { text: "挂载小技巧", link: "/blog/linux-mount" },
         { text: "网络管理", link: "/blog/linux-networkmanager" },
-        { text: "分区 & 格式化", link: "/blog/linux-partition-format" },
         { text: "zram & swap", link: "/blog/linux-zram" },
       ],
     },
@@ -141,7 +140,6 @@ function sidebarBlog() {
       text: "IDE",
       collapsed: false,
       items: [
-        { text: "Vim 配置", link: "/blog/vim" },
         { text: "VsCode 配置", link: "/blog/vscode" },
         { text: "Windows Neovim 配置", link: "/blog/windows-neovim-c" },
       ],

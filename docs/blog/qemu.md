@@ -1,16 +1,4 @@
----
-title: 如何优雅的使用 qemu-kvm
-date: 2022-06-08 19:16:16
-tags:
-  - Linux
-  - Tool
-categories:
-  - Linux
-cover: https://pic.3gbizhi.com/2020/1010/20201010015227581.jpg
-feature: false
----
-
-# {{ $frontmatter.title }}
+# 如何优雅的使用 qemu-kvm
 
 作为开发人员，往往需要在各种环境中进行调试，由于硬件资源的限制，调试环境的配置，往往需要花费大量的时间，本篇文章旨在使用 qemu-kvm 来配置各种调试环境，并且合理使用快照功能来实现各个环境的切换。
 

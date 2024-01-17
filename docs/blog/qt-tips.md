@@ -1,15 +1,4 @@
----
-title: Qt 提升代码质量的方法
-date: 2022-08-25 19:34:32
-tags:
-  - Qt
-  - C++
-categories:
-  - Development
-cover: https://pic.3gbizhi.com/2020/0827/20200827012845413.jpg
-feature: false
----
-# {{ $frontmatter.title }}
+# Qt 提升代码质量的方法
 
 1. 不需要的头文件不要包含
 2. 尽量使用前置声明，而非一味的包头文件

@@ -1,16 +1,4 @@
----
-title: CMake 基础用法
-date: 2022-09-07 19:36:43
-tags:
-  - CMake
-  - Qt
-categories:
-  - Development
-cover: https://pic.3gbizhi.com/2019/0923/20190923050727803.jpg
-feature: false
----
-
-# {{ $frontmatter.title }}
+# CMake 基础用法
 
 创建 CMake 项目大概需要以下几步：
 

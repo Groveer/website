@@ -1,14 +1,4 @@
----
-title: ArchLinux 安装后配置
-date: 2022-08-03 14:46:23
-tags:
-  - Linux
-categories:
-  - ArchLinux
-cover: https://pic.3gbizhi.com/2020/0827/20200827012846681.jpg
-feature: false
----
-# {{ $frontmatter.title }}
+# ArchLinux 安装后配置
 
 ArchLinux 安装后并不是完事大吉了，还需要好好配置才能愉快的进行使用。
 
@@ -43,7 +33,7 @@ ArchLinux 安装后并不是完事大吉了，还需要好好配置才能愉快�
 
    若安装失败，可以参考[GnuPG-2.1 与 pacman 密钥环](https://www.archlinuxcn.org/gnupg-2-1-and-the-pacman-keyring/)重新生成密钥环。
 
-### 配置[aur](https://wiki.archlinux.org/title/Arch_User_Repository_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87))
+### 配置[aur](<https://wiki.archlinux.org/title/Arch_User_Repository_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)>)
 
 ```shell
 sudo pacman -S yay
@@ -63,7 +53,7 @@ yay -S mkinitcpio-firmware
 
 ### 配置X11环境
 
-1. 安装[xorg](https://wiki.archlinux.org/title/Xorg_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87))：
+1. 安装[xorg](<https://wiki.archlinux.org/title/Xorg_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)>)：
 
    ```shell
    yay -S xorg-server xorg-xinit
@@ -107,6 +97,7 @@ wayland本身只是个协议，并不提供图形环境，因此需要安装混�
    ```
 
    其他桌面环境自行搜索：[wayland](https://wiki.archlinux.org/title/Wayland)
+
    > 某些应用程序是支持wayland协议，但是默认却走的xwayland，导致显示效果很不理想，可以设置环境变量或配置文件使其走wayland协议
 
 3. Firefox：
@@ -201,7 +192,7 @@ wayland本身只是个协议，并不提供图形环境，因此需要安装混�
 
 ## 安装输入法
 
-1. 安装[fcitx5](https://wiki.archlinux.org/title/Fcitx5_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87))：
+1. 安装[fcitx5](<https://wiki.archlinux.org/title/Fcitx5_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)>)：
 
    ```shell
    yay -S fcitx5 fcitx5-chinese-addons fcitx5-gtk fcitx5-configtool
@@ -236,7 +227,7 @@ wayland本身只是个协议，并不提供图形环境，因此需要安装混�
 
 ### golang
 
-1. 安装[go](https://wiki.archlinux.org/title/Go_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87))：
+1. 安装[go](<https://wiki.archlinux.org/title/Go_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)>)：
 
    ```shell
    yay -S go
@@ -286,6 +277,7 @@ wayland本身只是个协议，并不提供图形环境，因此需要安装混�
    `powerdevil`：电源管理模块，系统设置中的电源管理
    `kwalletmanager`：KDE 钱包管理，一般用来禁用电子钱包
    `konsole`：KDE 的仿真终端
+
 2. 基本安装：
    基本安装并不代表最小化安装，基本安装会附带很多程序，如桌面小工具、discover等
 

@@ -1,15 +1,4 @@
----
-title: Latex 环境配置
-date: 2023-01-17 18:52:54
-tags:
-  - Tool
-categories:
-  - Tool
-cover: https://pic.3gbizhi.com/2020/0915/20200915093843136.jpg
-feature: false
----
-
-# {{ $frontmatter.title }}
+# Latex 环境配置
 
 ## 安装基础软件
 

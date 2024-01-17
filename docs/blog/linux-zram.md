@@ -1,15 +1,4 @@
----
-title: 使用zram创建swap分区
-date: 2022-08-23 18:33:27
-tags:
-  - Linux
-categories:
-  - Linux
-cover: https://pic.3gbizhi.com/2020/1020/20201020112257666.jpg
-feature: false
----
-
-# {{ $frontmatter.title }}
+# 使用zram创建swap分区
 
 使用 zram 作为交换空间，与常规的基于分区或基于文件的交换空间做的事情相同。当内存压力过大时，一些最近使用最少的数据会被移到交换空间。平均来说，它会被压缩到其原始大小的 50% 左右，并被放置在内存的 zram 空间中。这比将这些内存页存储在硬盘上要快得多，并可以释放出它所使用的内存用于其他用途。
 

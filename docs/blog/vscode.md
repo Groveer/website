@@ -1,14 +1,4 @@
----
-title: VSCode 使用小技巧
-date: 2022-07-15 19:25:56
-tags:
-  - Tool
-categories:
-  - Tool
-cover: https://pic.3gbizhi.com/2020/0822/20200822084929279.jpg
-feature: false
----
-# {{ $frontmatter.title }}
+# VSCode 使用小技巧
 
 ## vscode中go开发环境配置
 

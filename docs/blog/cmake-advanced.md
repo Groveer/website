@@ -1,16 +1,4 @@
----
-title: CMake 进阶用法
-date: 2022-09-08 19:46:21
-tags:
-  - CMake
-  - Qt
-categories:
-  - Development
-cover: https://pic.3gbizhi.com/2020/0816/20200816070447569.jpg
-feature: true
----
-
-# {{ $frontmatter.title }}
+# CMake 进阶用法
 
 使用 CMake 创建一个简单的基于 Qt 的开发库，并且逐步添加单元测试和文档示例（doxygen）。
 

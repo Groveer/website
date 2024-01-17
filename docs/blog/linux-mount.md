@@ -1,14 +1,4 @@
----
-title: Linux 磁盘挂载
-date: 2022-09-10 16:06:43
-tags:
-  - Linux
-categories:
-  - Linux
-cover: https://pic.3gbizhi.com/2014/0504/20140504053231302.jpg
-feature: false
----
-# {{ $frontmatter.title }}
+# Linux 磁盘挂载
 
 这里提供一些在 Linux 环境下磁盘挂载小技巧。
 

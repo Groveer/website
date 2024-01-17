@@ -1,14 +1,4 @@
----
-title: Deepin 系统修复
-date: 2022-07-12 15:36:36
-tags:
-  - Linux
-categories:
-  - Deepin
-cover: https://pic.3gbizhi.com/2019/0912/20190912025700341.jpg
-feature: false
----
-# {{ $frontmatter.title }}
+# Deepin 系统修复
 
 Deepin 系统是一个基于 debian 的操作系统（UOS 为其专业版），最近发现很多小伙伴在升级时可能导致系统崩溃，无法进入的情况，这里提供一个通用的修复方法。一般升级出现的问题都是系统核心模块没有正常升级导致(通常是 systemd);这里的修复方法是通过 live 系统对 Deepin 本身的文件系统进行挂载，然后 chroot 进去进行再次更新来进行修复。
 
@@ -60,4 +50,5 @@ chroot：这是一个命令，目的是切换根目录，将某个目录当作�
    ```
 
    当执行`apt update`可能会出现无法获取仓库源的情况，这是由于 live 系统未激活导致，但是一般会出现`dpkg --configure -a`的提示，此时使用该命令再次更新即可。
+
 9. 至此，Deepin 系统已经成功进行再次更新，然后按`ctrl+d`退出 chroot 环境，最后使用`sudo reboot`重启系统进行 Deepin 就可以查看是否正常了
