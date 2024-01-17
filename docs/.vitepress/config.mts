@@ -35,7 +35,7 @@ export default defineConfig({
 
     sidebar: {
       "/blog/": sidebarBlog(),
-      "/qt/": sidebarQt(),
+      "/linux-disk-manager/": sidebarQt(),
     },
 
     editLink: {
@@ -84,9 +84,9 @@ function nav() {
       text: "专栏",
       items: [
         {
-          text: "跟我一起学Qt",
-          link: "/qt/index",
-          activeMatch: "/qt/",
+          text: "linux 磁盘管理",
+          link: "/linux-disk-manager/index",
+          activeMatch: "/linux-disk-manager/",
         },
       ],
     },
@@ -173,11 +173,11 @@ function sidebarQt() {
   return [
     {
       text: "前言",
-      link: "qt/index",
+      link: "linux-disk-manager/index",
     },
     {
-      text: "Windows 开发环境配置",
-      link: "qt/development-environment-windows",
+      text: "基础知识：分区、格式化、挂载点",
+      link: "linux-disk-manager/base-content",
     },
   ];
 }
