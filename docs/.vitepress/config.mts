@@ -51,10 +51,8 @@ export default defineConfig({
       copyright: "Copyright © 2022-至今 易上止正",
     },
 
-    algolia: {
-      appId: "GV7KKP6C12",
-      apiKey: "30f9e55bc540ba45254b012c4abffaae",
-      indexName: "groveer",
+    search: {
+      provider: "local"
     },
   },
   transformHtml: (_, id, { pageData }) => {
