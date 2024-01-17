@@ -19,9 +19,9 @@ feature: true
 ![效果1](./img/windows_nvim/nvim_1.gif)
 ![效果2](./img/windows_nvim/nvim_2.gif)
 
-> 由于 Neovim 插件和一些配置需要访问[Github](https://github.com/)，若无法访问，请自行百度`科学上网`和`DNS解析`，另不推荐使用镜像站或[Gitee](https://gitee.com/)，因为某些插件可能并没有被同步。
+> 由于 Neovim 插件和一些配置需要访问[Github](https://github.com/)，若无法访问，请自行百度`科学上网`或`DNS解析`，另不推荐使用镜像站或[Gitee](https://gitee.com/)，因为某些插件可能并没有被同步。
 
-> 本篇文章多次到`环境变量`的设置，关于 Windows 环境变量设置，网上有很多教程，这里不再赘述。
+> 本篇文章多次提到`环境变量`的设置，关于 Windows 环境变量设置，网上有很多教程，这里不再赘述。
 
 ## 系统基础环境配置
 
@@ -40,10 +40,10 @@ winget source remove winget
 winget source add winget https://mirrors.ustc.edu.cn/winget-source
 ```
 
-### zip & unzip
+### unzip
 
-1. 下载[附件](rc/unzip-command.zip)
-2. 解压后直接丢到`D:\Program Files\nvim-tools`目录即可
+1. 下载[unzip.exe](http://stahlworks.com/tool-zipunzip)
+2. 下载完成后直接丢到`D:\Program Files\nvim-tools`目录即可
 
 ### gzip
 
@@ -213,7 +213,7 @@ User git
 git clone https://github.com/Groveer/NvChad.git
 ```
 
-2. 创建软件，Neovim 读取配置是在固定的目录，在`cmd`中执行：
+2. 创建软链，Neovim 读取配置是在固定的目录，在`cmd`中执行：
 
 按下`Win+r`键，输入`cmd`运行，执行下面的命令：
 
@@ -221,7 +221,7 @@ git clone https://github.com/Groveer/NvChad.git
 mklink /d C:\Users\Administrator\AppData\Local\nvim D:\Project\NvChad
 ```
 
-其中，`Administrator`是本地账户名，`D:\Project\nvimdots`是 git clone 下来的项目
+其中，`Administrator`是本地账户名，`D:\Project\NvChad`是 git clone 下来的项目
 
 > 注意，本条命令要在 cmd 中执行，在 powershell 是没有该命令的！
 
@@ -247,9 +247,26 @@ nvim
 
 ### 扩展字体配置
 
-1. 下载[Maple](https://github.com/subframe7536/Maple-font/releases)字体
-2. 解压文件后全选 ttf 文件，然后右键安装
-3. 终端：设置->默认值->字体，选择`Maple Mono SC NF`，保存弹窗提示忽略
-4. 重启终端，进入 nvim，正常显示图标字体
+1. 使用图标字体才能完全支撑某些终端图标的正常显示，否则某些字体可能会显示为方块。
+2. 下载[Maple](https://github.com/subframe7536/Maple-font/releases)字体
+3. 解压文件后全选 ttf 文件，然后右键安装
+4. 终端：设置->默认值->字体，选择`Maple Mono SC NF`，保存弹窗提示忽略
+5. 重启终端，进入 nvim，正常显示图标字体
+
+## Qt 开发环境配置
+
+1. 进入 Qt 在线[下载](https://download.qt.io/archive/online_installers/)页面
+2. 选择最高的版本，进入目录
+3. 选择`qt-unified-windows-x64-4.5.2-online.exe`进行下载（版本可能会更新，撰写本文时，官网上最新的是 4.5.2 版本，若有更新，选择最新的版本即可）
+4. 双击 exe 文件，登录 Qt 账户，等待元信息检索完成
+5. 勾选展开 Qt 对应版本，勾选`MSVC 2019 64-bit`
+6. 其他默认勾选的选项可取消勾选，若习惯使用 qtcreator，可以将其勾选上
+7. 最后点击右下角的安装，等待安装完成。
+8. 若安装一直报错，可使用[fiddler](https://www.telerik.com/fiddler)工具替换国内源，再进行安装，参考这篇[文章](https://zhuanlan.zhihu.com/p/561274793)
+   ```powershell
+   urlreplace download.qt.io mirrors.tuna.tsinghua.edu.cn/qt
+   ```
+9. 在环境变量中，`Path`变量需添加一行：`C:\Qt\6.5.0\msvc2019_64\bin`，注意需改为自己的安装路径。
+10. 使用本人的 Neovim 配置已经自动支持`qml`补全和提示。
 
 > 在配置过程中若遇到什么问题，可在博客中留言。
