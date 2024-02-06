@@ -93,7 +93,7 @@ endif()
 # 若目标库安装了.cmake文件，则可以直接使用find_package
 #find_package(PkgConfig REQUIRED)
 # 若目标库未安装.cmake文件，但是安装了.pc文件，则可以使用pkgconfig
-#pkg_search_module(XCB REQUIRED xcb)
+#pkg_check_modules(PolkitQt REQUIRED IMPORTED_TARGET polkit-qt5-1)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Gui)
 
@@ -129,10 +129,12 @@ set_target_properties(${LIB_NAME} PROPERTIES
 # Qt 从5.15版本开始，可以直接使用Qt::Core，而不需要加版本号，但为了兼容性，把版本号加上为好
 target_include_directories(${BIN_NAME} PUBLIC
     Qt${QT_VERSION_MAJOR}::Core
+    #PkgConfig::PolkitQt 
 )
 
 target_link_libraries(${BIN_NAME} PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
+    #PkgConfig::PolkitQt 
 )
 
 # 指定安装目录，一般常用有3个： TARGETS（编译出来的目标二进制）、FILES（指定路径的文件，通常是配置文件或服务文件）、DIRECTORY（一般是配置文件较多时使用）。
