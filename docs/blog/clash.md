@@ -5,59 +5,85 @@
 ## clash 基本设置
 
 ```yaml
-mixed-port: 7890
-allow-lan: true
-mode: Rule
-ipv6: true
-log-level: warning
-external-controller: :9090
-external-ui: /usr/share/yacd/
+mixed-port: 7890    # 混合端口
+allow-lan: true     # 允许局域网连接
+mode: Rule          # 模式设置为规则，根据规则集进行匹配
+#ipv6: true          # 开启 IPv6 总开关，关闭阻断所有 IPv6 链接和屏蔽 DNS 请求 AAAA 记录
+log-level: warning  # 日志级别 silent/error/warning/info/debug
+external-controller: :9090  # RESTful API 监听地址
+external-ui: /usr/share/metacubexd/ # 配置 WEB UI 目录，使用 http://{{external-controller}}/ui 访问
+secret: "***"       # 认证密钥，使用密码生成器生成即可，在进行外部控制时需要认证
 ```
 
 ## clash 使用数据集及规则集
 
 ```yaml
-proxy-providers:
-  # 从链接导入的配置文件
-  proxy1:
-    type: http
-    path: ./proxies/proxy1.yaml
-    url: "<http url>"
-    interval: 3600
-    health-check:
-      enable: true
-      url: http://www.gstatic.com/generate_204
-      interval: 600
-  chatgpt:
-    type: http
-    path: ./proxies/chatgpt.yaml
-    url: "<http url>"
-    interval: 3600
-    filter: "chatGPT"
-    health-check:
-      enable: true
-      url: http://www.gstatic.com/generate_204
-      interval: 600
-proxy-groups:
-  - name: AUTO
-    type: url-test
-    interval: 3600
+# 引用，将重复配置单独引用
+pp: &pp
+  type: http
+  interval: 3600
+  health-check:
+    enable: true
+    interval: 30
     url: http://www.gstatic.com/generate_204
+
+# 数据集，将订阅地址导入到配置文件中
+proxy-providers:
+  test1:
+    path: ./proxies/test1.yaml
+    url: "url1"
+    <<: *pp
+  test2:
+    path: ./proxies/test2.yaml
+    url: "url2"
+    <<: *pp
+  test3:
+    path: ./proxies/test3.yaml
+    url: "url3"
+    <<: *pp
+
+# 非订阅节点
+proxies:
+  - name: test4
+    server: server
+    port: 443
+    type: vmess
+    uuid: uuid
+    alterId: 0
+    cipher: auto
+    tls: false
+    network: ws
+    ws-opts:
+      path: path
+
+# 配置真正的代理项，可自由组合上面的订阅或非订阅节点
+proxy-groups:
+  # 将按照 url 测试结果使用延迟最低节点
+  - name: auto-stable
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 30
+    proxies:
+      - test4
     use:
-      - proxy1
+      - test1
+  # 负载均衡，将按照算法随机选择节点
+  - name: auto-free
+    type: load-balance
+    url: http://www.gstatic.com/generate_204
+    interval: 10
+    use:
+      - test2
+      - test3
+  # 选择使用哪个组或节点
   - name: PROXY
     type: select
-    use:
-      - proxy1
     proxies:
-      - AUTO
-      - DIRECT
-  - name: ChatGPT
-    type: url-test
-    interval: 3600
-    url: http://www.gstatic.com/generate_204
-    use:
-      - chatgpt
+      - auto-stable
+      - auto-free
+      - test4
+
+# 规则集，参考: https://github.com/Loyalsoldier/clash-rules
 rule-providers:
   reject:
     type: http
@@ -149,22 +175,13 @@ rule-providers:
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt"
     path: ./rules/applications.yaml
     interval: 86400
-  ChatGPT:
-    type: http
-    behavior: classical
-    url: "https://raw.githubusercontent.com/G4free/clash-ruleset/main/ruleset/ChatGPT.yaml"
-    path: ./rules/ChatGPT.yaml
-    interval: 86400
+
 rules:
-  - DOMAIN-SUFFIX,local,DIRECT
-  - DOMAIN-SUFFIX,uniontech.com,DIRECT
-  - DOMAIN-SUFFIX,deepin.com,DIRECT
-  - DOMAIN-SUFFIX,kgithub.com,DIRECT
-  - DOMAIN-SUFFIX,gitee.com,DIRECT
-  - DOMAIN-SUFFIX,csdn.net,DIRECT
+  - DOMAIN-SUFFIX,openai.com,auto-stable
+  - DOMAIN-SUFFIX,kkgithub.com,DIRECT
+  - DOMAIN-SUFFIX,tailscale.io,DIRECT
   - DOMAIN,clash.razord.top,DIRECT
   - DOMAIN,yacd.haishan.me,DIRECT
-  - RULE-SET,ChatGPT,ChatGPT
   - RULE-SET,applications,DIRECT
   - RULE-SET,private,DIRECT
   - RULE-SET,reject,REJECT
@@ -262,10 +279,16 @@ dns:
 
 ```yaml
 dns:
+  fake-ip-filter:
+    - "+.internal.com"
+    - "+.internal.org"
   # Lookup domains via specific nameservers
   nameserver-policy:
     "+.internal.com": "dhcp://eno1"
     "+.internal.org": "dhcp://eno1"
+rules:
+  - DOMAIN-SUFFIX,internal.com,DIRECT
+  - DOMAIN-SUFFIX,internal.org,DIRECT
 ```
 
 注意，`eno1` 需要改为你自己的网卡名：
