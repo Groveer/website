@@ -169,7 +169,7 @@ vim /etc/pacman.d/mirrorlist
 或直接使用`reflector`对源速度进行排序：
 
 ```shell
-reflector --country China --protocol http --protocol https --latest 5 --save /etc/pacman.d/mirrorlist
+reflector --country China --protocol https --latest 5 --save /etc/pacman.d/mirrorlist
 ```
 
 ### 安装 Arch 和 Package Group

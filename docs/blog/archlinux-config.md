@@ -9,7 +9,7 @@ ArchLinux 安装后并不是完事大吉了，还需要好好配置才能愉快�
 1. 添加文件：`/etc/pacman.d/archlinuxcn-mirrorlist`，添加内容：
 
    ```shell
-   Server = https://repo.archlinuxcn.org/$arch
+   Server = https://mirrors.bfsu.edu.cn/archlinuxcn/$arch
    ```
 
    更多内容：参考[国内仓库](https://github.com/archlinuxcn/mirrorlist-repo/blob/master/archlinuxcn-mirrorlist)
@@ -59,7 +59,7 @@ yay -S mkinitcpio-firmware
    yay -S xorg-server xorg-xinit
    ```
 
-2. 修改`～/.xinitrc`文件，并添加内容，挑选自己的桌面环境添加：
+2. 修改`~/.xinitrc`文件，并添加内容，挑选自己的桌面环境添加：
 
    ```shell
    exec startplasma-x11       (kde-x11)
