@@ -83,105 +83,97 @@ proxy-groups:
       - auto-free
       - test4
 
+rp: &rp
+  type: http
+  interval: 86400
+
 # 规则集，参考: https://github.com/Loyalsoldier/clash-rules
 rule-providers:
   reject:
-    type: http
     behavior: domain
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt"
     path: ./rules/reject.yaml
-    interval: 86400
+    <<: *rp
 
   icloud:
-    type: http
     behavior: domain
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt"
     path: ./rules/icloud.yaml
-    interval: 86400
+    <<: *rp
 
   apple:
-    type: http
     behavior: domain
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt"
     path: ./rules/apple.yaml
-    interval: 86400
+    <<: *rp
 
   google:
-    type: http
     behavior: domain
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/google.txt"
     path: ./rules/google.yaml
-    interval: 86400
+    <<: *rp
 
   proxy:
-    type: http
     behavior: domain
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/proxy.txt"
     path: ./rules/proxy.yaml
-    interval: 86400
+    <<: *rp
 
   direct:
-    type: http
     behavior: domain
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/direct.txt"
     path: ./rules/direct.yaml
-    interval: 86400
+    <<: *rp
 
   private:
-    type: http
     behavior: domain
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/private.txt"
     path: ./rules/private.yaml
-    interval: 86400
+    <<: *rp
 
   gfw:
-    type: http
     behavior: domain
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt"
     path: ./rules/gfw.yaml
-    interval: 86400
+    <<: *rp
 
   tld-not-cn:
-    type: http
     behavior: domain
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/tld-not-cn.txt"
     path: ./rules/tld-not-cn.yaml
-    interval: 86400
+    <<: *rp
 
   telegramcidr:
-    type: http
     behavior: ipcidr
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt"
     path: ./rules/telegramcidr.yaml
-    interval: 86400
+    <<: *rp
 
   cncidr:
-    type: http
     behavior: ipcidr
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/cncidr.txt"
     path: ./rules/cncidr.yaml
-    interval: 86400
+    <<: *rp
 
   lancidr:
-    type: http
     behavior: ipcidr
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/lancidr.txt"
     path: ./rules/lancidr.yaml
-    interval: 86400
+    <<: *rp
 
   applications:
-    type: http
     behavior: classical
     url: "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/applications.txt"
     path: ./rules/applications.yaml
-    interval: 86400
+    <<: *rp
 
 rules:
+  - DOMAIN-SUFFIX,uniontech.com,DIRECT
+  - DOMAIN-SUFFIX,deepin.org,DIRECT
+  - DOMAIN-SUFFIX,deepin.com,DIRECT
   - DOMAIN-SUFFIX,openai.com,auto-stable
   - DOMAIN-SUFFIX,kkgithub.com,DIRECT
   - DOMAIN-SUFFIX,tailscale.io,DIRECT
-  - DOMAIN,clash.razord.top,DIRECT
-  - DOMAIN,yacd.haishan.me,DIRECT
   - RULE-SET,applications,DIRECT
   - RULE-SET,private,DIRECT
   - RULE-SET,reject,REJECT
@@ -207,7 +199,6 @@ tun:
   enable: true
   stack: system
   auto-route: true
-  auto-redir: true
   auto-detect-interface: true
   dns-hijack:
     - any:53
