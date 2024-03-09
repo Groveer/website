@@ -40,13 +40,7 @@ Nvidia 的开源驱动(nouveau)是作为逆向工程开发的，性能毕竟比�
    nvidia nvidia_modeset nvidia_uvm nvidia_drm
    ```
 
-3. 为防止内核加载开源驱动，在`HOOKS`字段里删除：
-
-   ```shell
-   kms
-   ```
-
-4. 生成新的 initramfs：
+3. 生成新的 initramfs：
 
    ```shell
    mkinitcpio -P
@@ -79,9 +73,7 @@ Nvidia 的开源驱动(nouveau)是作为逆向工程开发的，性能毕竟比�
    Enable 三个服务：`nvidia-suspend.service`, `nvidia-hibernate.service`, `nvidia-resume.service`
 
    ```
-   sudo systemctl enable nvidia-suspend.service
-   sudo systemctl enable nvidia-hibernate.service
-   sudo systemctl enable nvidia-resume.service
+   sudo systemctl enable nvidia-suspend.service nvidia-hibernate.service nvidia-resume.service
    ```
 
 ### 检查驱动是否正常
