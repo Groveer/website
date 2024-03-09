@@ -1,8 +1,14 @@
-# ArchLinux 系统安装，保姆级教程
+# ArchLinux 系统安装
 
-ArchLinux 安装不是最难的，但也不是傻瓜式难度安装（有手就行），安装 ArchLinux 不仅需要动动手指，还需要有一台电脑，有一个 U 盘，还必须有可以访问互联网的网络。
-ArchLinux 的安装并不是很难，只要了解了 Linux 启动流程，就可以理解它的大部分安装步骤。
-首先需要确认主板系统是 UEFI，这里使用 GPT 分区格式，关于究竟该使用 MBR 还是 GPT 请参考[这里](<https://wiki.archlinux.org/title/Partitioning_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E9%80%89%E6%8B%A9_GPT_%E8%BF%98%E6%98%AF_MBR>)。
+任何Linux系统的安装，都可以参考以下步骤：
+
+1. 下载镜像
+2. 将镜像刻录到U盘
+3. BIOS设置U盘启动
+4. 对磁盘进行分区以及格式化
+5. 设置分区挂载点
+6. 安装系统（网络安装或本地文件对拷）
+7. 系统基本设置，完成安装
 
 ## 下载 Arch Linux 镜像
 
@@ -14,7 +20,7 @@ ArchLinux 的安装并不是很难，只要了解了 Linux 启动流程，就可
 
 :::details Linux/Unix
 
-```shell
+```bash
 md5sum archlinux-x86_64.iso
 ```
 
@@ -22,7 +28,7 @@ md5sum archlinux-x86_64.iso
 
 :::details MacOS
 
-```shell
+```bash
 md5 archlinux-x86_64.iso
 ```
 
@@ -30,7 +36,7 @@ md5 archlinux-x86_64.iso
 
 :::details Windows
 
-```shell
+```bash
 certutil -hashfile .\archlinux-x86_64.isop MD5
 ```
 
@@ -38,19 +44,19 @@ certutil -hashfile .\archlinux-x86_64.isop MD5
 
 将输出和下载页面提供的 md5 值对比一下，看看是否一致，不一致则不要继续安装，换个节点重新下载，直到一致为止。
 
-## 将镜像写入 U 盘
+## 将镜像刻录到 U 盘
 
 :::details Linux/Unix
 
 1. 确保插上电脑的 U 盘没有被挂载，某些桌面环境会自动挂载 U 盘。
 
-   ```shell
+   ```bash
    lsblk
    ```
 
    可能会显示以下内容：
 
-   ```shell
+   ```bash
    NAME     MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
    sda      8:0    0 931.5G  0 disk
    └─sda1    8:1    0 931.5G  0 part /home
@@ -64,7 +70,7 @@ certutil -hashfile .\archlinux-x86_64.isop MD5
    其中 sdb 就是 U 盘，而 sdb1 就是其第一个分区，其他同理；下面的 nvme0n1 只是协议不同，将其一样看成一个硬盘就行。
    从上面打印出来的内容可以看出 sdb1 已经被挂载到“/run/media/guo/Arch”，可以使用 umount 命令将其卸载：
 
-   ```shell
+   ```bash
    sudo umount /dev/sdb1
    ```
 
@@ -72,7 +78,7 @@ certutil -hashfile .\archlinux-x86_64.isop MD5
 
 2. 使用 dd 命令将镜像刻录到 U 盘中：
 
-   ```shell
+   ```bash
    sudo dd bs=4M if=path/to/archlinux-x86_64.iso of=/dev/sdb conv=fsync oflag=direct status=progress
    ```
 
@@ -84,7 +90,7 @@ certutil -hashfile .\archlinux-x86_64.isop MD5
 
 1. 获取管理员权限
 
-   ```shell
+   ```bash
    sudo su - root
    ```
 
@@ -92,7 +98,7 @@ certutil -hashfile .\archlinux-x86_64.isop MD5
 
 2. 查询 iso 镜像路径
 
-   ```shell
+   ```bash
    pwd
    ```
 
@@ -100,7 +106,7 @@ certutil -hashfile .\archlinux-x86_64.isop MD5
 
 3. 查看 U 盘挂载点
 
-   ```shell
+   ```bash
    df -h
    ```
 
@@ -108,13 +114,13 @@ certutil -hashfile .\archlinux-x86_64.isop MD5
 
 4. 卸载 U 盘
 
-   ```shell
+   ```bash
    diskutil unmountDisk /dev/disk2
    ```
 
 5. 刻录镜像
 
-   ```shell
+   ```bash
    dd if=/Users/guo/Desktop/archlinux-x86_64.iso of=/dev/disk2 bs=4m
    ```
 
@@ -141,14 +147,14 @@ source file 选择 iso 镜像，Target device 选择 U 盘，点击 Write 进行
 
 - 查看连接：
 
-  ```shell
+  ```bash
   ip link
   ```
 
 - 连接
   对于有线网络，安装镜像启动的时候，会默认启动 dhcpcd，如果没有启动，可以手动启动：
 
-  ```shell
+  ```bash
   dhcpcd
   ```
 
@@ -162,13 +168,13 @@ source file 选择 iso 镜像，Target device 选择 U 盘，点击 Write 进行
 
 一般来说，不需要进行修改，如果发现下载速度很慢，可以修改其中顺序或加入[中国节点](<https://wiki.archlinux.org/title/Mirrors_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD>)的地址
 
-```shell
+```bash
 vim /etc/pacman.d/mirrorlist
 ```
 
 或直接使用`reflector`对源速度进行排序：
 
-```shell
+```bash
 reflector --country China --protocol https --latest 5 --save /etc/pacman.d/mirrorlist
 ```
 
@@ -176,52 +182,99 @@ reflector --country China --protocol https --latest 5 --save /etc/pacman.d/mirro
 
 虚拟机用户不需要安装`linux-firmware`
 
-```shell
-pacstrap /mnt base base-devel linux linux-firmware
+```bash
+pacstrap /mnt base base-devel linux linux-firmware neovim
 ```
 
 ### 生成 fstab 文件
 
-```shell
+```bash
 genfstab -U /mnt >> /mnt/etc/fstab
 ```
 
 ### 切换至安装好的 Arch
 
-```shell
+```bash
 arch-chroot /mnt
 ```
 
-### 安装必备工具
+### 安装网络工具
 
-```shell
-pacman -S vim networkmanager sudo
+1. 若需要进行网络认证（不是密码认证，一般指公司内网认证），推荐使用`NetworkManager`：
+
+```bash
+pacman -S networkmanager
 ```
 
-开启 network：
+启用服务：
 
-```shell
+```bash
 systemctl enable NetworkManager
 ```
+
+2. 若是个人电脑，推荐使用`systemd-networkd`及`systemd-resolved`，不需要额外安装，基础包中附带：
+
+启用服务：
+
+```bash
+systemctl enable systemd-networkd systemd-resolved
+```
+
+3. 若是个人笔记本，在`2`的基础上安装`iwd`：
+
+```bash
+pacman -S iwd
+```
+
+启用服务：
+
+```bash
+systemctl enable iwd
+```
+
+:::warning 注意
+
+1. 使用`1`可以直接用`nmcli`命令进行网络设置
+2. 使用`2`和`3`需要对`systemd`进行配置：
+
+    1. 一般是在`/etc/systemd/network/`目录中添加`.network`文件，这里给两个示例，具体文档参考[Arch Wiki](https://wiki.archlinux.org/title/Systemd-networkd):
+    ```ini
+    [Match]
+    Name=enp1s0
+
+    [Network]
+    DHCP=yes
+    ```
+
+    ```ini
+    [Match]
+    Name=wlp2s0
+
+    [Network]
+    DHCP=yes
+    IgnoreCarrierLoss=3s
+    ```
+
+:::
 
 ### 本地化
 
 - 修改`/etc/locale.gen`，取消注释下面这两行配置：
 
-  ```shell
+  ```bash
   en_US.UTF-8 UTF-8
   zh_CN.UTF-8 UTF-8
   ```
 
 - 生成 locale 信息：
 
-  ```shell
+  ```bash
   locale-gen
   ```
 
 - 创建`/etc/locale.conf`并写入：
 
-  ```shell
+  ```bash
   LANG=en_US.UTF-8
   ```
 
@@ -229,13 +282,13 @@ systemctl enable NetworkManager
 
 - 修改 hostname，创建`/etc/hostname`并写入（可替换为其他名称）：
 
-  ```shell
+  ```bash
   Arch
   ```
 
 - 配置 hosts，编辑`/etc/hosts`
 
-  ```shell
+  ```bash
   127.0.0.1 localhost
   ::1    localhost
   127.0.1.1 Arch.localdomain
@@ -247,21 +300,36 @@ systemctl enable NetworkManager
 
 - AMD CPU：
 
-```shell
+```bash
 pacman -S amd-ucode
 ```
 
 - Intel CPU：
 
-```shell
+```bash
 pacman -S intel-ucode
 ```
 
-### 安装 GRUB
+### 安装引导程序
+
+正确的开机顺序是：
+
+1. BIOS 先启动，然后搜索可用的引导
+2. 引导程序负责启动系统内核
+
+所以启动系统并不是 BIOS 直接启动的，而是有各中间程序来负责，而不同的引导程序设置不同，但最基本的设置就是设置内核参数，其他的设置都是无关紧要的。
+
+这里有几个引导程序可供选择：
+
+1. [GRUB](https://wiki.archlinux.org/title/GRUB)：使用人数最多，丰富的生态（主题）
+2. [systemd-boot](https://wiki.archlinux.org/title/systemd-boot): 逻辑简单，没有花里胡哨的内容
+3. [UKI(unified kernel image)](https://wiki.archlinux.org/title/Unified_kernel_image): 启动速度最快，将内核镜像直接打到 efi 文件里面
+
+这里以 GRUB 为例，其他方式参考上方的官方 Wiki
 
 MBR 引导：
 
-```shell
+```bash
 pacman -S grub
 grub-install --target=i386-pc /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -269,7 +337,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 UEFI 引导：
 
-```shell
+```bash
 pacman -S grub efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -277,31 +345,31 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 ### 修改 root 密码
 
-```shell
+```bash
 passwd
 ```
 
 ### 新建用户
 
-```shell
+```bash
 useradd -m -g wheel <username>
 ```
 
 修改sudoers，将下面这一行取消注释：
 
-```shell
+```bash
 %wheel ALL=(ALL:ALL) ALL
 ```
 
 修改密码：
 
-```shell
+```bash
 passwd <username>
 ```
 
 ## 重新启动
 
-```shell
+```bash
 exit    # 退出 chroot 环境，或按 Ctrl+D
 reboot
 ```
@@ -312,7 +380,7 @@ reboot
 
 - 开启时间自动同步并修改时区
 
-  ```shell
+  ```bash
   timedatectl set-ntp true
   timedatectl set-timezone Asia/Shanghai
   ```
