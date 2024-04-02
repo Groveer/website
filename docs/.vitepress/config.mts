@@ -134,6 +134,7 @@ function sidebarBlog() {
         { text: "Latex 搭建", link: "/blog/latex" },
         { text: "Qemu 工具", link: "/blog/qemu" },
         { text: "clash 配置", link: "/blog/clash" },
+        { text: "免费代理", link: "/blog/free-proxy" },
       ],
     },
     {
