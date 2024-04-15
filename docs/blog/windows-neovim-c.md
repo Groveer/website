@@ -15,7 +15,7 @@
 可以创建一个目录用来存放工具，并且将这个目录添加进系统环境变量：
 
 ```powershell
-D:\Program Files\nvim-tools
+D:\Tools
 ```
 
 后续所有命令都是在`PowerShell`中执行，`WindowsPowerShell`亦可。记得配置完环境变量后需要重新打开`PowerShell`生效。
@@ -30,49 +30,48 @@ winget source add winget https://mirrors.ustc.edu.cn/winget-source
 ### unzip
 
 1. 下载[unzip.exe](http://stahlworks.com/tool-zipunzip)
-2. 下载完成后直接丢到`D:\Program Files\nvim-tools`目录即可
+2. 下载完成后直接丢到`D:\Tools`目录即可
 
 ### gzip
 
 1. 下载[Binaries](https://gnuwin32.sourceforge.net/packages/gzip.htm)压缩包
-2. 解压后将`gzip.exe`放在`D:\Program Files\nvim-tools`目录
+2. 解压后将`gzip.exe`放在`D:\Tools`目录
 
 ### wget
 
 1. 下载[wget.exe](https://eternallybored.org/misc/wget/)
-2. 将`wget.exe`放在`D:\Program Files\nvim-tools`目录
+2. 将`wget.exe`放在`D:\Tools`目录
 
 ### tree-sitter
 
 1. 下载[tree-sitter-windows-x64.gz](https://github.com/tree-sitter/tree-sitter/releases)
-2. 解压文件将`tree-sitter.exe`文件放在`D:\Program Files\nvim-tools`目录
+2. 解压文件将`tree-sitter.exe`文件放在`D:\Tools`目录
 
 ### ripgrep
 
 1. 下载[ripgrep](https://github.com/BurntSushi/ripgrep/releases)的 zip 文件
-2. 解压文件将`rg.exe`文件放在`D:\Program Files\nvim-tools`目录
+2. 解压文件将`rg.exe`文件放在`D:\Tools`目录
 
 ### fnm
 
 1. 下载[fnm-windows.zip](https://github.com/Schniz/fnm/releases)
-2. 解压文件将`fnm.exe`文件放在`D:\Program Files\nvim-tools`目录
+2. 解压文件将`fnm.exe`文件放在`D:\Tools`目录
 
-配置 fnm 国内源：
-
-```powershell
-explorer.exe $PROFILE
-```
-
-打开的文件添加：
+配置 fnm：
 
 ```powershell
-fnm env --use-on-cd | Out-String | Invoke-Expression
+echo "fnm env --use-on-cd | Out-String | Invoke-Expression" >> ~\Documents\PowerShell\Profile.ps1
 ```
+
+> 若提示找不到路径，可以新建目录：
+> ```
+> mkdir ~\Documents\PowerShell
+> ```
 
 重启`PowerShell`，安装 nodejs：
 
 ```powershell
-fnm install --latest
+fnm install --latest --node-dist-mirror=https://npmmirror.com/mirrors/node
 fnm default 21
 fnm use 21
 ```
@@ -102,7 +101,17 @@ npm install -g neovim
 
 > 建议自定义安装，注意勾选`pip`。
 
-配置 pip 国内源：
+配置虚拟环境：
+
+```powershell
+python -m venv .venv
+```
+
+```powershell
+echo "~\.venv\Scripts\Activate.ps1" >> ~\Documents\PowerShell\Profile.ps1
+```
+
+重启`PowerShell`，配置 pip 国内源：
 
 ```powershell
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
@@ -116,10 +125,7 @@ pip install pynvim
 
 ### MSBuild
 
-1. 下载[Visual Studio 2022 生成工具](https://visualstudio.microsoft.com/zh-hans/downloads/)
-2. 注意**不是**`Visual Studio 2022`，`Visual Studio 2022`是大家熟悉的 IDE
-3. 应该往下拉展开`适用于Visual Studio 2022 的工具`，选择`Visual Studio 2022 生成工具`进行下载
-   ![下载Visual Studio 2022 生成工具](./img/windows_nvim/msbuild.jpg)
+1. 下载[Visual Studio 2022 生成工具](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
 4. 双击 exe 文件进行安装
 5. 在弹出的界面，左侧勾选`使用 C++ 的桌面开发`，右侧按下图勾选即可
    ![安装 C++ 编译器和 SDK](./img/windows_nvim/msbuild_c++.jpg)
@@ -132,7 +138,7 @@ pip install pynvim
 explorer.exe $PROFILE
 ```
 
-打开的文件添加刚刚复制的内容，并进行调整，最终结果为：
+打开的文件`~\Documents\PowerShell\Profile.ps1`添加刚刚复制的内容，并进行调整（删一些双引号），最终结果为：
 
 ```powershell
 Import-Module "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\Microsoft.VisualStudio.DevShell.dll"
@@ -154,6 +160,51 @@ Enter-VsDevShell e344e64a -DevCmdArguments '-arch=x64 -no_logo'
 Set-PSReadLineKeyHandler -Key 'Ctrl+d' -Function DeleteCharOrExit
 # 设置 fnm 环境变量
 fnm env --use-on-cd | Out-String | Invoke-Expression
+# 引入 python 虚拟环境
+~\.venv\Scripts\Activate.ps1
+```
+
+### Rust
+
+查看[官网](https://www.rust-lang.org/tools/install)，下载[64位程序](https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe)
+
+使用官方的源下载比较慢，可以临时设置环境变量，加速下载：
+
+```powershell
+$env:RUSTUP_DIST_SERVER="https://mirrors.tuna.tsinghua.edu.cn/rustup"
+```
+
+```powershell
+~\Downloads\rustup-init.exe
+```
+
+配置`cargo`国内源，在`~\.cargo\config.toml`中添加：
+
+```toml
+[source.crates-io]
+registry = "https://github.com/rust-lang/crates.io-index"
+# 指定镜像
+replace-with = 'rsproxy' # 如：tuna、sjtu、ustc，或者 rustcc
+
+# 字节跳动
+[source.rsproxy]
+registry = "sparse+https://rsproxy.cn/index/"
+
+# 中国科学技术大学
+[source.ustc]
+registry = "sparse+https://mirrors.ustc.edu.cn/crates.io-index/"
+
+# 上海交通大学
+[source.sjtu]
+registry = "sparse+https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index/"
+
+# 清华大学
+[source.tuna]
+registry = "sparse+https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index/"
+
+# rustcc社区
+[source.rustcc]
+registry = "sparse+https://code.aliyun.com/rustcc/crates.io-index/"
 ```
 
 ### Neovim
@@ -194,10 +245,14 @@ User git
 
 ### Neovim 配置
 
-1. Neovim 配置对于刚接触的人可能比较复杂，其实就是配置一些插件，大部分插件的 github 都有其使用说明，这里为了方便，可以直接使用本人的[配置](https://github.com/Groveer/NvChad)，执行：
+:::tips 提示
+作为开发者，最好有条理的管理自己的项目，本人将`D:\Projects`作为项目目录，还可以将该目录设置为启动目录。
+:::
+
+1. Neovim 配置对于刚接触的人可能比较复杂，其实就是配置一些插件，大部分插件的 github 都有其使用说明，这里为了方便，可以直接使用本人的[配置](https://github.com/Groveer/nvchad-starter)，执行：
 
 ```powershell
-git clone https://github.com/Groveer/NvChad.git
+git clone git@github.com:Groveer/nvchad-starter.git nvim
 ```
 
 2. 创建软链，Neovim 读取配置是在固定的目录，在`cmd`中执行：
@@ -205,26 +260,28 @@ git clone https://github.com/Groveer/NvChad.git
 按下`Win+r`键，输入`cmd`运行，执行下面的命令：
 
 ```cmd
-mklink /d C:\Users\Administrator\AppData\Local\nvim D:\Project\NvChad
+mklink /d C:\Users\Administrator\AppData\Local\nvim D:\Project\nvim
 ```
 
-其中，`Administrator`是本地账户名，`D:\Project\NvChad`是 git clone 下来的项目
+其中，`Administrator`是本地账户名，`D:\Project\nvim`是 git clone 下来的项目
 
-> 注意，本条命令要在 cmd 中执行，在 powershell 是没有该命令的！
+:::warning 警告
+注意，本条命令要在 cmd 中执行，在 powershell 是没有该命令的！
+:::
 
-3. 本人的 Neovim 配置使用 Lazy.nvim 进行插件管理，首次启动会进行安装插件：
+3. 本人的 Neovim 配置使用 Lazy.nvim 进行插件管理，首次启动会自动进行安装插件，若因网络问题安装失败，可以重新打开，多尝试几次：
 
 ```powershell
 nvim
 ```
 
-5. 一般来说，进行了上面的软件安装，Neovim 所需的程序就齐全了，当然也可以执行命令进行检查：
+4. 一般来说，进行了上面的软件安装，Neovim 所需的程序就齐全了，当然也可以执行命令进行检查：
 
 ```powershell
 :checkhealth
 ```
 
-6. 若 Lsp 提示安装失败，可查看日志，然后根据日志内容进行修复：
+5. 若 Lsp 提示安装失败，可查看日志，然后根据日志内容进行修复：
 
 ```powershell
 :MasonLog
