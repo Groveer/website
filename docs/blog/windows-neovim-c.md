@@ -64,6 +64,7 @@ echo "fnm env --use-on-cd | Out-String | Invoke-Expression" >> ~\Documents\Power
 ```
 
 > 若提示找不到路径，可以新建目录：
+>
 > ```
 > mkdir ~\Documents\PowerShell
 > ```
@@ -126,8 +127,8 @@ pip install pynvim
 ### MSBuild
 
 1. 下载[Visual Studio 2022 生成工具](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
-4. 双击 exe 文件进行安装
-5. 在弹出的界面，左侧勾选`使用 C++ 的桌面开发`，右侧按下图勾选即可
+2. 双击 exe 文件进行安装
+3. 在弹出的界面，左侧勾选`使用 C++ 的桌面开发`，右侧按下图勾选即可
    ![安装 C++ 编译器和 SDK](./img/windows_nvim/msbuild_c++.jpg)
 
 安装完成后，系统开始菜单应该有`Developer PowerShell for VS 2022`，右键->打开文件位置->右键文件->属性->快捷方式，复制`目标(T):`里面的内容：
@@ -245,7 +246,7 @@ User git
 
 ### Neovim 配置
 
-:::tips 提示
+:::tip 提示
 作为开发者，最好有条理的管理自己的项目，本人将`D:\Projects`作为项目目录，还可以将该目录设置为启动目录。
 :::
 
@@ -255,12 +256,10 @@ User git
 git clone git@github.com:Groveer/nvchad-starter.git nvim
 ```
 
-2. 创建软链，Neovim 读取配置是在固定的目录，在`cmd`中执行：
+2. 创建软链，Neovim 读取配置是在固定的目录，在`powershell`中执行：
 
-按下`Win+r`键，输入`cmd`运行，执行下面的命令：
-
-```cmd
-mklink /d C:\Users\Administrator\AppData\Local\nvim D:\Project\nvim
+```powershell
+New-Item -ItemType Junction -Path "C:\Users\Administrator\AppData\Local\nvim" -Target "D:\Projects\nvim"
 ```
 
 其中，`Administrator`是本地账户名，`D:\Project\nvim`是 git clone 下来的项目
@@ -301,16 +300,18 @@ nvim
 
 1. 进入 Qt 在线[下载](https://download.qt.io/archive/online_installers/)页面
 2. 选择最高的版本，进入目录
-3. 选择`qt-unified-windows-x64-4.5.2-online.exe`进行下载（版本可能会更新，撰写本文时，官网上最新的是 4.5.2 版本，若有更新，选择最新的版本即可）
-4. 双击 exe 文件，登录 Qt 账户，等待元信息检索完成
-5. 勾选展开 Qt 对应版本，勾选`MSVC 2019 64-bit`
-6. 其他默认勾选的选项可取消勾选，若习惯使用 qtcreator，可以将其勾选上
-7. 最后点击右下角的安装，等待安装完成。
-8. 若安装一直报错，可使用[fiddler](https://www.telerik.com/fiddler)工具替换国内源，再进行安装，参考这篇[文章](https://zhuanlan.zhihu.com/p/561274793)
-   ```powershell
-   urlreplace download.qt.io mirrors.tuna.tsinghua.edu.cn/qt
-   ```
-9. 在环境变量中，`Path`变量需添加一行：`C:\Qt\6.5.0\msvc2019_64\bin`，注意需改为自己的安装路径。
+3. 选择`qt-online-installer-windows-x64-4.8.0.exe`进行下载（版本可能会更新，撰写本文时，官网上最新的是 4.8.0 版本，若有更新，选择最新的版本即可）
+4. 为了加快安装速度，使用命令行启动安装文件，可以配置使用国内源进行安装：
+
+```powershell
+~\Downloads\qt-online-installer-windows-x64-4.8.0.exe --mirror https://mirror.nju.edu.cn/qt
+```
+
+5. 登录 Qt 账户，等待元信息检索完成。
+6. 勾选展开 Qt 对应版本，勾选`MSVC 2019 64-bit`。
+7. 其他默认勾选的选项可`取消勾选`，若习惯使用 qtcreator，可以将其勾选上，建议保留`CMake`&`ninja`。
+8. 最后点击右下角的安装，等待安装完成。
+9. 在环境变量中，`Path`变量需添加一行：`C:\Qt\6.7.1\msvc2019_64\bin`，注意需改为自己的安装路径。
 10. 使用本人的 Neovim 配置已经自动支持`qml`补全和提示。
 
 > 在配置过程中若遇到什么问题，可在博客中留言。
