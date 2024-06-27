@@ -18,24 +18,13 @@
    ```
 
    ```shell
-   #!/bin/bash
+   #!/bin/sh
    # Disable zswap
    echo 0 > /sys/module/zswap/parameters/enabled
-
-   # Load zram module
    modprobe zram
-
-   # use zstd compression
-   echo zstd > /sys/block/zram0/comp_algorithm
-
-   # echo 512M > /sys/block/zram0/disksize
-   echo 8G > /sys/block/zram0/disksize
-
-   mkswap /dev/zram0
-
-   # Priority can have values between -1 and 32767
-   swapon /dev/zram0 -p 32767
-   ```
+   zramctl /dev/zram0 --algorithm zstd --size 32G
+   mkswap -U clear /dev/zram0
+   swapon --priority 100 /dev/zram0
 
 2. 创建文件：
 
@@ -44,19 +33,15 @@
    ```
 
    ```shell
-   #!/bin/bash
+   #!/bin/sh
    swapoff /dev/zram0
-   echo 0 > /sys/class/zram-control/hot_remove
-
-   # Not required, but creating a blank uninitalzed drive
-   # after removing one may be desired
-   cat /sys/class/zram-control/hot_add
-   ```
+   modprobe -r zram
+   echo 1 > /sys/module/zswap/parameters/enabled
 
 3. 创建文件：
 
    ```shell
-   /etc/systemd/system/create-zram-swap.service
+   /etc/systemd/system/zram-swap.service
    ```
 
    ```shell
@@ -89,7 +74,7 @@ sudo systemctl daemon-reload
 ```
 
 ```shell
-sudo systemctl enable --now create-zram-swap.service
+sudo systemctl enable --now zram-swap.service
 ```
 
 _参考_：[https://cloud-atlas.readthedocs.io/zh_CN/latest/linux/redhat_linux/kernel/zram.html](https://cloud-atlas.readthedocs.io/zh_CN/latest/linux/redhat_linux/kernel/zram.html)
