@@ -1,14 +1,23 @@
-# Neovim + CMake + MSBuild 配置 Windows 开发环境
+# Neovim + MSBuild 配置 Windows 开发环境
 
 为了与 Linux 拥有一致的开发体验，特在此记录：在 Windows 上使用 Neovim + CMake + MSBuild 搭建 C/C++ 环境。
+
+配置完成后，您将拥有以下几种开发环境：
+
+- C/C++
+- Qt/qml
+- python
+- nodejs
+- rust
 
 首先上效果：
 ![效果1](./img/windows_nvim/nvim_1.gif)
 ![效果2](./img/windows_nvim/nvim_2.gif)
 
+> [!WARNING] 注意
 > 由于 Neovim 插件和一些配置需要访问[Github](https://github.com/)，若无法访问，请自行百度`科学上网`或`DNS解析`，另不推荐使用镜像站或[Gitee](https://gitee.com/)，因为某些插件可能并没有被同步。
 
-> 本篇文章多次提到`环境变量`的设置，关于 Windows 环境变量设置，网上有很多教程，这里不再赘述。
+> 本篇文章提到`环境变量`的设置，关于 Windows 环境变量设置，网上有很多教程，这里不再赘述。
 
 ## 系统基础环境配置
 
@@ -18,24 +27,19 @@
 D:\Tools
 ```
 
-后续所有命令都是在`PowerShell`中执行，`WindowsPowerShell`亦可。记得配置完环境变量后需要重新打开`PowerShell`生效。
-
-### 配置`winget`国内源
-
-```powershell
-winget source remove winget
-winget source add winget https://mirrors.ustc.edu.cn/winget-source
-```
+微软推荐使用`PowerShell`，本篇文章基于`Windows Terminal`及`PowerShell`进行配置，请自行在微软商店中安装这两款软件，即本配置不适用于`Win7`及以下版本。
 
 ### unzip
 
 1. 下载[unzip.exe](http://stahlworks.com/tool-zipunzip)
-2. 下载完成后直接丢到`D:\Tools`目录即可
+2. 下载完成后直接丢到`D:\Tools`目录
+   ![download unzip.exe](img/windows_nvim/download_unzip.jpg)
 
 ### gzip
 
 1. 下载[Binaries](https://gnuwin32.sourceforge.net/packages/gzip.htm)压缩包
 2. 解压后将`gzip.exe`放在`D:\Tools`目录
+   ![download gzip.exe](img/windows_nvim/download_gzip.jpg)
 
 ### wget
 
@@ -44,13 +48,15 @@ winget source add winget https://mirrors.ustc.edu.cn/winget-source
 
 ### tree-sitter
 
-1. 下载[tree-sitter-windows-x64.gz](https://github.com/tree-sitter/tree-sitter/releases)
+1. 下载[tree-sitter-windows-x64.gz](https://github.com/tree-sitter/tree-sitter/releases)，看名字下载，别下错了。
 2. 解压文件将`tree-sitter.exe`文件放在`D:\Tools`目录
 
 ### ripgrep
 
-1. 下载[ripgrep](https://github.com/BurntSushi/ripgrep/releases)的 zip 文件
+1. 下载[ripgrep-14.1.0-x86_64-pc-windows-msvc.zip](https://github.com/BurntSushi/ripgrep/releases)
 2. 解压文件将`rg.exe`文件放在`D:\Tools`目录
+
+> 若找不到该文件，点击下方的`Show all xx assets`，展开后下载即可。
 
 ### fnm
 
@@ -63,6 +69,7 @@ winget source add winget https://mirrors.ustc.edu.cn/winget-source
 echo "fnm env --use-on-cd | Out-String | Invoke-Expression" >> ~\Documents\PowerShell\Profile.ps1
 ```
 
+> [!IMPORTANT] 提示
 > 若提示找不到路径，可以新建目录：
 >
 > ```
@@ -76,6 +83,8 @@ fnm install --latest --node-dist-mirror=https://npmmirror.com/mirrors/node
 fnm default 21
 fnm use 21
 ```
+
+> 版本号可能会随着官方版本迭代有变化，修改为自己安装的版本即可！
 
 配置 nodejs 国内源：
 
@@ -122,6 +131,20 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
 ```powershell
 pip install pynvim
+```
+
+### Neovim
+
+下载[nvim-win64.msi](https://github.com/neovim/neovim/releases/latest/download/nvim-win64.msi)后双击安装
+
+### Git
+
+查看[Git](https://git-scm.com/download/win)官方文档，点击`64-bit Git for Windows Setup`进行下载，然后安装即可
+
+添加`PowerShell` git 支持，执行：
+
+```powershell
+Install-Module posh-git -Scope CurrentUser
 ```
 
 ### MSBuild
@@ -208,28 +231,6 @@ registry = "sparse+https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index/"
 registry = "sparse+https://code.aliyun.com/rustcc/crates.io-index/"
 ```
 
-### Neovim
-
-查看[Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)官方文档，执行：
-
-```powershell
-winget install Neovim.Neovim -s winget
-```
-
-### Git
-
-查看[Git](https://git-scm.com/download/win)官方文档，执行：
-
-```powershell
-winget install Git.Git -s winget
-```
-
-添加`PowerShell` git 支持：
-
-```powershell
-Install-Module posh-git -Scope CurrentUser
-```
-
 ## 开发环境配置
 
 ### Git 配置
@@ -264,10 +265,6 @@ New-Item -ItemType Junction -Path "C:\Users\Administrator\AppData\Local\nvim" -T
 
 其中，`Administrator`是本地账户名，`D:\Project\nvim`是 git clone 下来的项目
 
-:::warning 警告
-注意，本条命令要在 cmd 中执行，在 powershell 是没有该命令的！
-:::
-
 3. 本人的 Neovim 配置使用 Lazy.nvim 进行插件管理，首次启动会自动进行安装插件，若因网络问题安装失败，可以重新打开，多尝试几次：
 
 ```powershell
@@ -285,8 +282,6 @@ nvim
 ```powershell
 :MasonLog
 ```
-
-> 本人在某次安装过程中，发现某个 lsp 无法安装，通过日志查看是某个目录无法删除，打开 Windows 文件管理器进行删除，提示某个程序正在占用，也不想继续排查是哪个程序占用，直接重启电脑，然后再次打开`nvim`，就正常了。
 
 ### 扩展字体配置
 
