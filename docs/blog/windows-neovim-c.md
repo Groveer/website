@@ -17,7 +17,7 @@
 > [!WARNING] 注意
 > 由于 Neovim 插件和一些配置需要访问[Github](https://github.com/)，若无法访问，请自行百度`科学上网`或`DNS解析`，另不推荐使用镜像站或[Gitee](https://gitee.com/)，因为某些插件可能并没有被同步。
 
-> 本篇文章提到`环境变量`的设置，关于 Windows 环境变量设置，网上有很多教程，这里不再赘述。
+> 本篇文章提到`环境变量（PATH）`的设置，关于 Windows 环境变量设置，网上有很多教程，这里不再赘述。
 
 ## 系统基础环境配置
 
@@ -28,6 +28,12 @@ D:\Tools
 ```
 
 微软推荐使用`PowerShell`，本篇文章基于`Windows Terminal`及`PowerShell`进行配置，请自行在微软商店中安装这两款软件，即本配置不适用于`Win7`及以下版本。
+
+### 7z
+
+1. 下载[7-Zip](https://www.7-zip.org/)，选择`x64`版本
+2. 下载完成后双击安装
+3. 将安装路径添加道系统环境变量，如`C:\Program Files\7-Zip`
 
 ### unzip
 
@@ -54,6 +60,13 @@ D:\Tools
 ### ripgrep
 
 1. 下载[ripgrep-14.1.0-x86_64-pc-windows-msvc.zip](https://github.com/BurntSushi/ripgrep/releases)
+2. 解压文件将`rg.exe`文件放在`D:\Tools`目录
+
+> 若找不到该文件，点击下方的`Show all xx assets`，展开后下载即可。
+
+### fd
+
+1. 下载[fd-v10.1.0-x86_64-pc-windows-msvc.zip](https://github.com/sharkdp/fd/releases)
 2. 解压文件将`rg.exe`文件放在`D:\Tools`目录
 
 > 若找不到该文件，点击下方的`Show all xx assets`，展开后下载即可。
