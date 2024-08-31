@@ -40,7 +40,7 @@ export default defineConfig({
 
     editLink: {
       pattern:
-        "https://github.com/groveer/groveer.github.io/edit/main/docs/:path",
+        "https://github.com/groveer/website/edit/main/docs/:path",
       text: "在 GitHub 上编辑此页",
     },
 
