@@ -36,6 +36,7 @@ export default defineConfig({
     sidebar: {
       "/blog/": sidebarBlog(),
       "/linux-disk-manager/": sidebarQt(),
+      "/neovim/": sidebarNeovim(),
     },
 
     editLink: {
@@ -68,6 +69,11 @@ function nav() {
           link: "/linux-disk-manager/index",
           activeMatch: "/linux-disk-manager/",
         },
+        {
+          text: "Neovim 配置",
+          link: "/neovim/index",
+          activeMatch: "/neovim/",
+        }
       ],
     },
     { text: "关于", link: "/about/about", activeMatch: "/about/about" },
@@ -158,5 +164,22 @@ function sidebarQt() {
       text: "基础知识：分区、格式化、挂载点",
       link: "linux-disk-manager/base-content",
     },
+  ];
+}
+
+function sidebarNeovim() {
+  return [
+    {
+      text: "前言",
+      link: "neovim/index",
+    },
+    {
+      text: "Neovim 基础",
+      link: "neovim/basic",
+    },
+    {
+      text: "二十分钟精通 Lua",
+      link: "neovim/lua",
+    }
   ];
 }
