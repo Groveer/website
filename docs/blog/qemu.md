@@ -21,6 +21,10 @@
    ```shell
    chattr +C dir
    ```
+   或者：
+   ```
+   qemu-img create -f qcow2 <image_file> -o nocow=on 80G
+   ```
 
 5. 准备好目录后，可以在当前目录执行下面命令来创建硬盘镜像，也可以使用`-f raw`来创建 raw 格式的硬盘镜像，但是该格式不支持快照功能。
 
@@ -39,13 +43,13 @@
 2. 拷贝固件文件：
 
    ```shell
-   cp /usr/share/edk2-ovmf/x64/OVMF_VARS.fd .
+   cp /usr/share/edk2/x64/OVMF_VARS.4m.fd .
    ```
 
 3. 启动参数加上以下参数：
 
    ```shell
-   -drive if=pflash,format=raw,readonly=on,file=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd -drive if=pflash,format=raw,file=OVMF_VARS.fd
+   -drive if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF_CODE.fd -drive if=pflash,format=raw,file=OVMF_VARS.4m.fd
    ```
 
 ## 安装系统
