@@ -138,6 +138,10 @@ source file 选择 iso 镜像，Target device 选择 U 盘，点击 Write 进行
 
 :::
 
+:::tips 其他方式
+也可以使用其他方式，比如[Ventoy](https://www.ventoy.net/cn/)
+:::
+
 ## 从 U 盘启动 Arch live 环境
 
 在 BIOS 中设置启动磁盘为刚刚写入镜像的 U 盘，一般来说开机按`F12`即可选择启动盘，如果不行，则需`F2`或`DEL`进入 BIOS 修改 U 盘为优先启动，注意装完系统后将 U 盘启动改回后面去。
