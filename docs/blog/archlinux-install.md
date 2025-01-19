@@ -138,7 +138,7 @@ source file 选择 iso 镜像，Target device 选择 U 盘，点击 Write 进行
 
 :::
 
-:::tips 其他方式
+:::tip 其他方式
 也可以使用其他方式，比如[Ventoy](https://www.ventoy.net/cn/)
 :::
 

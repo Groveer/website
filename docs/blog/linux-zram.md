@@ -22,7 +22,7 @@
    # Disable zswap
    echo 0 > /sys/module/zswap/parameters/enabled
    modprobe zram
-   zramctl /dev/zram0 --algorithm zstd --size 32G
+   zramctl /dev/zram0 --algorithm zstd --size 8G
    mkswap -U clear /dev/zram0
    swapon --priority 100 /dev/zram0
 
