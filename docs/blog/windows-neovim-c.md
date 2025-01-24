@@ -273,10 +273,10 @@ git clone git@github.com:Groveer/nvchad-starter.git nvim
 2. 创建软链，Neovim 读取配置是在固定的目录，在`powershell`中执行：
 
 ```powershell
-New-Item -ItemType Junction -Path "C:\Users\Administrator\AppData\Local\nvim" -Target "D:\Projects\nvim"
+New-Item -ItemType Junction -Path "~\AppData\Local\nvim" -Target "D:\Projects\nvim"
 ```
 
-其中，`Administrator`是本地账户名，`D:\Project\nvim`是 git clone 下来的项目
+其中，D:\Projects\nvim`是 git clone 下来的项目
 
 3. 本人的 Neovim 配置使用 Lazy.nvim 进行插件管理，首次启动会自动进行安装插件，若因网络问题安装失败，可以重新打开，多尝试几次：
 
@@ -290,6 +290,12 @@ nvim
 :checkhealth
 ```
 
+5. 第一次启动可以安装推荐 Lsp：
+
+```powershell
+:Mason
+```
+
 5. 若 Lsp 提示安装失败，可查看日志，然后根据日志内容进行修复：
 
 ```powershell
@@ -301,7 +307,7 @@ nvim
 1. 使用图标字体才能完全支撑某些终端图标的正常显示，否则某些字体可能会显示为方块。
 2. 下载[Maple](https://github.com/subframe7536/Maple-font/releases)字体
 3. 解压文件后全选 ttf 文件，然后右键安装
-4. 终端：设置->默认值->字体，选择`Maple Mono SC NF`，保存弹窗提示忽略
+4. 终端：设置->默认值->字体，选择`Maple Mono NF CN`，保存弹窗提示忽略
 5. 重启终端，进入 nvim，正常显示图标字体
 
 ## Qt 开发环境配置
