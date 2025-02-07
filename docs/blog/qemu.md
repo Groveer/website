@@ -49,7 +49,7 @@
 3. 启动参数加上以下参数：
 
    ```shell
-   -drive if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF_CODE.fd -drive if=pflash,format=raw,file=OVMF_VARS.4m.fd
+   -drive if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF_CODE.4m.fd -drive if=pflash,format=raw,file=OVMF_VARS.4m.fd
    ```
 
 ## 安装系统
