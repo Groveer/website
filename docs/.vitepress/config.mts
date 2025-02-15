@@ -178,6 +178,10 @@ function sidebarNeovim() {
     {
       text: "二十分钟精通 Lua",
       link: "neovim/lua",
+    },
+    {
+      text: "Neovim 生态系统的核心优势",
+      link: "neovim/plugins",
     }
   ];
 }
