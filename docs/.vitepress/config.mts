@@ -35,7 +35,7 @@ export default defineConfig({
 
     sidebar: {
       "/blog/": sidebarBlog(),
-      "/linux-disk-manager/": sidebarQt(),
+      "/linux-disk-manager/": sidebarLinuxDisk(),
       "/neovim/": sidebarNeovim(),
     },
 
@@ -60,7 +60,11 @@ export default defineConfig({
 
 function nav() {
   return [
-    { text: "博客", link: "/blog/toc", activeMatch: "/blog/" },
+    {
+      text: "博客",
+      link: "/blog/toc",
+      activeMatch: "/blog/"
+    },
     {
       text: "专栏",
       items: [
@@ -76,8 +80,16 @@ function nav() {
         }
       ],
     },
-    { text: "关于", link: "/about/about", activeMatch: "/about/about" },
-    { text: "留言板", link: "/about/talk", activeMatch: "/about/talk" },
+    {
+      text: "关于",
+      link: "/about/about",
+      activeMatch: "/about/about"
+    },
+    {
+      text: "留言板",
+      link: "/about/talk",
+      activeMatch: "/about/talk"
+    },
     {
       text: "友链",
       items: [
@@ -152,7 +164,7 @@ function sidebarBlog() {
   ];
 }
 
-function sidebarQt() {
+function sidebarLinuxDisk() {
   return [
     {
       text: "前言",
@@ -161,8 +173,8 @@ function sidebarQt() {
     {
       text: "基础知识：分区、格式化、挂载点",
       link: "linux-disk-manager/base-content",
-    },
-  ];
+    }
+  ]
 }
 
 function sidebarNeovim() {
