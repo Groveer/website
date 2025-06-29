@@ -131,7 +131,7 @@ python -m venv .venv
 ```
 
 ```powershell
-echo "~\.venv\Scripts\Activate.ps1" >> ~\Documents\PowerShell\Profile.ps1
+echo "~\.venv\Scripts\Activate.ps1" >> $PROFILE
 ```
 
 重启`PowerShell`，配置 pip 国内源：
