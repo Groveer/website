@@ -71,6 +71,13 @@ D:\Tools
 
 > 若找不到该文件，点击下方的`Show all xx assets`，展开后下载即可。
 
+### fzf
+
+1. 下载[ fzf-0.63.0-windows_amd64.zip](https://github.com/junegunn/fzf/releases)
+2. 解压文件将`fzf.exe`文件放在`D:\Tools`目录
+
+> 若找不到该文件，点击下方的`Show all xx assets`，展开后下载即可。
+
 ### fnm
 
 1. 下载[fnm-windows.zip](https://github.com/Schniz/fnm/releases)
