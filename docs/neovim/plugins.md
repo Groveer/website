@@ -6,7 +6,6 @@ Neovim 的成功不仅源于其高效的编辑体验，更得益于其**高度�
 
 1. **插件数量爆炸式增长**
    截至 2025 年，Neovim 插件数量已达到数千级别，覆盖代码补全、调试、UI 美化等全场景需求。例如：
-
    - 代码智能：`nvim-cmp`（自动补全）、`nvim-lspconfig`（语言服务器）
    - 界面增强：`nvim-tree.lua`（文件树）、`lualine.nvim`（状态栏）
    - 效率工具：`telescope.nvim`（模糊搜索）、`vim-fugitive`（Git 集成）
@@ -41,9 +40,61 @@ Neovim 的插件管理器解决了「个性化配置」与「维护成本」之�
 
 ### 安装与基础配置
 
+#### 基本配置目录介绍
+
+```text
+~/.config/nvim/
+├── init.lua
+└── lua/
+    └── user/
+        ├── init.lua
+        ├── options.lua
+        ├── keymaps.lua
+        └── plugins.lua
+```
+
+**各文件作用说明：**
+
+- `init.lua`  
+  Neovim 的主配置入口，加载 `lua/user/init.lua`。
+
+- `lua/user/init.lua`  
+  统一加载 `options.lua`、`keymaps.lua` 和 `plugins.lua`，作为模块入口。
+
+- `lua/user/options.lua`  
+  设置 Neovim 的基础选项。
+
+- `lua/user/keymaps.lua`  
+  定义自定义快捷键映射。
+
+- `lua/user/plugins.lua`  
+  管理和加载插件。
+
+下面是一个简单的 `lua/user/init.lua` 文件示例，用于统一加载 `options.lua`、`keymaps.lua` 和 `plugins.lua`：
+
+```lua
+-- file path: ~/.config/nvim/lua/user/init.lua
+require("user.options")
+require("user.keymaps")
+require("user.plugins")
+```
+
+这样可以在 `init.lua` 中只需加载 `user` 这个模块即可：
+
+```lua
+-- ...existing code...
+require("user")
+-- ...existing code...
+```
+
+> [!TIP] `user` 可以改成任何标识
+
+#### 插件管理器配置
+
 在 `init.lua` 中添加以下代码初始化 lazy.nvim：
 
 ```lua
+-- file path: ~/.config/nvim/init.lua
 -- 自动安装 lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
