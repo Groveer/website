@@ -190,6 +190,10 @@ function sidebarNeovim() {
         {
             text: "Neovim 生态系统的核心优势",
             link: "/neovim/plugins",
+        },
+        {
+            text: "Neovim 与 LSP",
+            link: "/neovim/lsp",
         }
     ];
 }

@@ -46,48 +46,45 @@ Neovim 的插件管理器解决了「个性化配置」与「维护成本」之�
 ~/.config/nvim/
 ├── init.lua
 └── lua/
-    └── user/
-        ├── init.lua
-        ├── options.lua
-        ├── keymaps.lua
-        └── plugins.lua
+    ├── configs.lua
+    ├── options.lua
+    ├── keymaps.lua
+    └── plugins.lua
 ```
 
 **各文件作用说明：**
 
 - `init.lua`  
-  Neovim 的主配置入口，加载 `lua/user/init.lua`。
+  Neovim 的主配置入口，加载 `lua/configs.lua`。
 
-- `lua/user/init.lua`  
+- `lua/configs.lua`  
   统一加载 `options.lua`、`keymaps.lua` 和 `plugins.lua`，作为模块入口。
 
-- `lua/user/options.lua`  
+- `lua/options.lua`  
   设置 Neovim 的基础选项。
 
-- `lua/user/keymaps.lua`  
+- `lua/keymaps.lua`  
   定义自定义快捷键映射。
 
 - `lua/user/plugins.lua`  
   管理和加载插件。
 
-下面是一个简单的 `lua/user/init.lua` 文件示例，用于统一加载 `options.lua`、`keymaps.lua` 和 `plugins.lua`：
+下面是一个简单的 `lua/init.lua` 文件示例，用于统一加载 `options.lua`、`keymaps.lua` 和 `plugins.lua`：
 
 ```lua
--- file path: ~/.config/nvim/lua/user/init.lua
-require("user.options")
-require("user.keymaps")
-require("user.plugins")
+-- file path: ~/.config/nvim/lua/init.lua
+require("options")
+require("keymaps")
+require("plugins")
 ```
 
-这样可以在 `init.lua` 中只需加载 `user` 这个模块即可：
+这样可以在 `init.lua` 中只需加载 `confiigs` 这个模块即可：
 
 ```lua
 -- ...existing code...
-require("user")
+require("configs")
 -- ...existing code...
 ```
-
-> [!TIP] `user` 可以改成任何标识
 
 #### 插件管理器配置
 
@@ -110,20 +107,14 @@ vim.opt.rtp:prepend(lazypath)
 
 -- 声明插件列表
 require("lazy").setup({
-  {
-    "folke/which-key.nvim",  -- 快捷键提示插件
-    event = "VimEnter",      -- 启动后立即加载
-    config = function()      -- 插件配置函数
-      require("which-key").setup()
-    end
+  spec = {
+    -- add your plugins here
+   import = "plugins" 
   },
-  {
-    "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" }, -- 声明依赖
-    cmd = "Telescope",       -- 仅当执行 :Telescope 命令时加载
-  }
 })
 ```
+
+这样就可以在 plugins.lua 中管理插件了，当然还可以继续细分，将每个插件都分成一个配置文件，这样是最好管理的，可以参考本人的[配置](https://github.com/Groveer/nvvim)。
 
 ### 高级特性解析
 
