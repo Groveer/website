@@ -9,7 +9,7 @@ ArchLinux 安装后并不是完事大吉了，还需要好好配置才能愉快�
 1. 添加文件：`/etc/pacman.d/archlinuxcn-mirrorlist`，添加内容：
 
    ```shell
-   Server = https://mirrors.bfsu.edu.cn/archlinuxcn/$arch
+   Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
    ```
 
    更多内容：参考[国内仓库](https://github.com/archlinuxcn/mirrorlist-repo/blob/master/archlinuxcn-mirrorlist)
