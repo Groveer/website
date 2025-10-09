@@ -271,10 +271,10 @@ User git
 作为开发者，最好有条理的管理自己的项目，本人将`D:\Projects`作为项目目录，还可以将该目录设置为启动目录。
 :::
 
-1. Neovim 配置对于刚接触的人可能比较复杂，其实就是配置一些插件，大部分插件的 github 都有其使用说明，这里为了方便，可以直接使用本人的[配置](https://github.com/Groveer/nvchad-starter)，执行：
+1. Neovim 配置对于刚接触的人可能比较复杂，其实就是配置一些插件，大部分插件的 github 都有其使用说明，这里为了方便，可以直接使用本人的[配置](https://github.com/Groveer/nvvim)，执行：
 
 ```powershell
-git clone git@github.com:Groveer/nvchad-starter.git nvim
+git clone git@github.com:Groveer/nvvim.git nvim
 ```
 
 2. 创建软链，Neovim 读取配置是在固定的目录，在`powershell`中执行：
