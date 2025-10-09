@@ -27,7 +27,7 @@
 D:\Tools
 ```
 
-微软推荐使用`PowerShell`，本篇文章基于`Windows Terminal`及`PowerShell`进行配置，请自行在微软商店中安装这两款软件，即本配置不适用于`Win7`及以下版本。
+微软推荐使用`PowerShell`，本篇文章基于`Windows Terminal`及`PowerShell`进行配置，请自行在微软商店或者github中安装这两款软件，即本配置不适用于`Win7`及以下版本。
 
 ### 7z
 
@@ -62,6 +62,9 @@ D:\Tools
 1. 下载[ripgrep-14.1.0-x86_64-pc-windows-msvc.zip](https://github.com/BurntSushi/ripgrep/releases)
 2. 解压文件将`rg.exe`文件放在`D:\Tools`目录
 
+> [!TIP] 提示
+> 版本号可能会随着官方版本迭代有变化，安装最新版本即可！
+>
 > 若找不到该文件，点击下方的`Show all xx assets`，展开后下载即可。
 
 ### fd
@@ -69,6 +72,9 @@ D:\Tools
 1. 下载[fd-v10.1.0-x86_64-pc-windows-msvc.zip](https://github.com/sharkdp/fd/releases)
 2. 解压文件将`rg.exe`文件放在`D:\Tools`目录
 
+> [!TIP] 提示
+> 版本号可能会随着官方版本迭代有变化，安装最新版本即可！
+>
 > 若找不到该文件，点击下方的`Show all xx assets`，展开后下载即可。
 
 ### fzf
@@ -76,6 +82,9 @@ D:\Tools
 1. 下载[ fzf-0.63.0-windows_amd64.zip](https://github.com/junegunn/fzf/releases)
 2. 解压文件将`fzf.exe`文件放在`D:\Tools`目录
 
+> [!TIP] 提示
+> 版本号可能会随着官方版本迭代有变化，安装最新版本即可！
+>
 > 若找不到该文件，点击下方的`Show all xx assets`，展开后下载即可。
 
 ### fnm
@@ -86,11 +95,11 @@ D:\Tools
 配置 fnm：
 
 ```powershell
-echo "fnm env --use-on-cd | Out-String | Invoke-Expression" >> ~\Documents\PowerShell\Profile.ps1
+echo "fnm env --use-on-cd | Out-String | Invoke-Expression" >> $PROFILE
 ```
 
-> [!IMPORTANT] 提示
-> 若提示找不到路径，可以新建目录：
+> [!IMPORTANT] 小提示
+> 若提示找不到路径，可以新建目录，再重新执行上面的命令：
 >
 > ```
 > mkdir ~\Documents\PowerShell
@@ -100,22 +109,19 @@ echo "fnm env --use-on-cd | Out-String | Invoke-Expression" >> ~\Documents\Power
 
 ```powershell
 fnm install --latest --node-dist-mirror=https://npmmirror.com/mirrors/node
-fnm default 21
-fnm use 21
+fnm default 24
+fnm use 24
 ```
 
+> [!TIP] 提示
 > 版本号可能会随着官方版本迭代有变化，修改为自己安装的版本即可！
+>
+> fnm 只是个 nodejs 的版本管理器，不喜欢可以自行以其他方式安装 nodejs！
 
 配置 nodejs 国内源：
 
 ```powershell
 npm config set registry https://registry.npmmirror.com/
-```
-
-安装 neovim 支持：
-
-```powershell
-npm install -g neovim
 ```
 
 ### python
@@ -131,9 +137,10 @@ npm install -g neovim
 
 > 建议自定义安装，注意勾选`pip`。
 
-配置虚拟环境：
+配置虚拟环境，在家目录执行：
 
 ```powershell
+cd ~
 python -m venv .venv
 ```
 
@@ -147,15 +154,9 @@ echo "~\.venv\Scripts\Activate.ps1" >> $PROFILE
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-安装 nvim 工具：
-
-```powershell
-pip install pynvim
-```
-
 ### Neovim
 
-下载[nvim-win64.msi](https://github.com/neovim/neovim/releases/latest/download/nvim-win64.msi)后双击安装
+下载[nvim-win64.msi](https://github.com/neovim/neovim/releases/latest/download/nvim-win64.msi)后双击安装，如果需要[nightly](https://github.com/neovim/neovim/releases/download/nightly/nvim-win64.msi)版本，可点击直接下载。
 
 ### Git
 
@@ -167,6 +168,9 @@ pip install pynvim
 Install-Module posh-git -Scope CurrentUser
 ```
 
+> [!TIP] 提示
+> posh-git 可能会导致 PowerShell 启动速度变慢，安装后只是会帮助 git 命令自动补全，熟悉 git 命令可以不安装，但 git 一定要安装！
+
 ### MSBuild
 
 1. 下载[Visual Studio 2022 生成工具](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
@@ -175,6 +179,9 @@ Install-Module posh-git -Scope CurrentUser
    ![安装 C++ 编译器和 SDK](./img/windows_nvim/msbuild_c++.jpg)
 
 安装完成后，系统开始菜单应该有`Developer PowerShell for VS 2022`，右键->打开文件位置->右键文件->属性->快捷方式，复制`目标(T):`里面的内容：
+
+> [!TIP] 提示
+> 如果已经安装了 Visual Studio，可以不必安装生成工具，直接使用即可！
 
 ![terminal](./img/windows_nvim/select_terminal.jpg)
 
@@ -189,14 +196,15 @@ Import-Module "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Co
 Enter-VsDevShell e344e64a -DevCmdArguments '-arch=x64 -no_logo'
 ```
 
-其中`-DevCmdArguments`参数是手动添加的，目的是调整架构，为后面编译`Neovim`插件做准备。
+> [!TIP] 提示
+> 其中`-DevCmdArguments`参数是手动添加的，目的是调整架构，为后面编译`Neovim`插件做准备。e344e64a 每次安装都不一样的，注意别直接复制！
 
 最终的配置文件内容：
 
 ```powershell
 # Install-Module posh-git -Scope CurrentUser
 # 引入 git 模块，引入之前需要先执行上面的命令，若报错需要执行：set-executionpolicy remotesigne
-Import-Module posh-git
+Import-Module posh-git # 可选，会导致 PowerShell 启动速度变慢
 # 添加开发环境
 Import-Module "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\Microsoft.VisualStudio.DevShell.dll"
 Enter-VsDevShell e344e64a -DevCmdArguments '-arch=x64 -no_logo'
@@ -251,7 +259,31 @@ registry = "sparse+https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index/"
 registry = "sparse+https://code.aliyun.com/rustcc/crates.io-index/"
 ```
 
+> [!IMPORTANT] 注意
+> 安装完成后，终端里面会提示添加环境变量：`%USERPROFILE%\.cargo\bin`，注意这个路径添加在用户基本的环境变量里面，而不是系统级别，也就是上面的环境变量，不是下面的！
+
 ## 开发环境配置
+
+在配置开发环境之前，可以检查下上面的工具是否都全部安装了，环境变量是否都配置好了：
+
+> [!WARNING] 很重要：
+> 
+>```powershell
+>7z -h
+>unzip -h
+>gzip -V
+>wget -V
+>tree-sitter -V
+>rg -V
+>fd -V
+>fzf --version
+>fnm -V
+>npm --version
+>cargo -V
+>pip -V
+>```
+
+如果有报错，自行百度或者检查下上面的步骤！
 
 ### Git 配置
 
@@ -267,9 +299,8 @@ User git
 
 ### Neovim 配置
 
-:::tip 提示
-作为开发者，最好有条理的管理自己的项目，本人将`D:\Projects`作为项目目录，还可以将该目录设置为启动目录。
-:::
+> [!TIP] 提示
+> 作为开发者，最好有条理的管理自己的项目，本人将`D:\Projects`作为项目目录，还可以将该目录设置为启动目录。
 
 1. Neovim 配置对于刚接触的人可能比较复杂，其实就是配置一些插件，大部分插件的 github 都有其使用说明，这里为了方便，可以直接使用本人的[配置](https://github.com/Groveer/nvvim)，执行：
 
