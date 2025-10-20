@@ -127,6 +127,7 @@ function sidebarBlog() {
                 },
                 { text: "自动登陆", link: "/blog/linux-auto-login" },
                 { text: "挂载小技巧", link: "/blog/linux-mount" },
+                { text: "ssh 配置说明", link: "/blog/ssh" },
                 { text: "网络管理", link: "/blog/linux-networkmanager" },
                 { text: "zram & swap", link: "/blog/linux-zram" },
             ],

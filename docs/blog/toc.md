@@ -11,6 +11,7 @@
       2. [正确使用日志记录](how-to-use-logger)
    3. [自动登陆](linux-auto-login)
    4. [挂载小技巧](linux-mount)
+   4. [ssh 配置说明](ssh)
    5. [网络管理](linux-networkmanager)
    6. [zram & swap](linux-zram)
 2. Develop
