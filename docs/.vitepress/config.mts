@@ -125,6 +125,7 @@ function sidebarBlog() {
                         { text: "正确使用日志记录", link: "/blog/how-to-use-logger" },
                     ],
                 },
+                { text: "创建 aria2 systemd 服务", link: "/blog/linux-aria2" },
                 { text: "自动登陆", link: "/blog/linux-auto-login" },
                 { text: "挂载小技巧", link: "/blog/linux-mount" },
                 { text: "ssh 配置说明", link: "/blog/ssh" },
