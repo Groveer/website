@@ -76,3 +76,15 @@ Host github.com
 ```
 
 > 注意代理地址需改为自己的代理地址！
+
+如果需要认证，则需要`ncat`，可以使用以下命令安装：
+
+```bash
+sudo pacman -S nmap
+```
+
+然后将上面的`ProxyCommand`改为：
+
+```bash
+ProxyCommand ncat --proxy-type socks5 --proxy 127.0.0.1:7890 --proxy-auth username:password %h %p
+```
