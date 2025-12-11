@@ -23,8 +23,7 @@
    1. [Git 小技巧](git)
    2. [Latex 搭建](latex)
    3. [Qemu 工具](qemu)
-   4. [clash 配置](clash)
-   5. [免费代理](free-proxy)
+   6. [Bitwarden 使用指南](bitwarden)
 4. IDE
    1. [VsCode 配置](vscode)
    2. [Windows Neovim 配置](windows-neovim-c)
