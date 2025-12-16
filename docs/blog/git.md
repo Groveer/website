@@ -48,9 +48,9 @@ cat ~\.ssh\id_ed25519.pub
 
 ```powershell
 Host github.com
-Hostname ssh.github.com
-Port 443
-User git
+    Hostname ssh.github.com
+    Port 443
+    User git
 ```
 
 至此，在 Windows 环境中就可以愉快使用 git 和访问 github 了。
