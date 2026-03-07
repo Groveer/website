@@ -148,6 +148,7 @@ function sidebarBlog() {
             items: [
                 { text: "Git 小技巧", link: "/blog/git" },
                 { text: "Latex 搭建", link: "/blog/latex" },
+                { text: "n8n 部署及汉化", link: "/blog/n8n-deploy" },
                 { text: "Qemu 工具", link: "/blog/qemu" },
                 { text: "Bitwarden 使用指南", link: "/blog/bitwarden" },
             ],

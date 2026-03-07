@@ -22,8 +22,9 @@
 3. Tools
    1. [Git 小技巧](git)
    2. [Latex 搭建](latex)
-   3. [Qemu 工具](qemu)
-   6. [Bitwarden 使用指南](bitwarden)
+   3. [n8n 部署及汉化](n8n-deploy)
+   4. [Qemu 工具](qemu)
+   5. [Bitwarden 使用指南](bitwarden)
 4. IDE
    1. [VsCode 配置](vscode)
    2. [Windows Neovim 配置](windows-neovim-c)
