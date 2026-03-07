@@ -101,18 +101,29 @@ bw get item <item-id>
 上面这些是常用的命令，结合其他命令还可以实现更多功能，比如下面这个示例：
 
 ```bash
-# unlock bitwarden and export session token
-ubw() {
+import_env() {
+    if command -v systemctl >/dev/null; then
+        # import systemd user environment variables
+        eval "$(systemctl --user show-environment | sed -E 's/([^=]+)=(.*)/export \1=\${\1:="\2"}/')"
+    fi
+}
+```
+
+```bash
     # set environment variables
     export BW_SESSION=$(bw unlock --raw)
     keys=(
-        GEMINI_API_KEY
+        CPA_API_KEY
         TAVILY_API_KEY
-        UT_KEY
     )
     for key in "${keys[@]}"; do
-        export $key=$(bw get notes $key --session $BW_SESSION)
-        echo "$key=${(P)key}"  # 使用参数扩展 ${(P)key} 读取变量名为$key的变量的值
+        value=$(bw get notes $key --session $BW_SESSION)
+        if command -v systemctl >/dev/null; then
+            systemctl --user set-environment "$key=$value"
+        else
+            export "$key=$value"
+        fi
+        echo "$key=$value"
     done
     # get ssh key
     keys=(
@@ -123,6 +134,7 @@ ubw() {
     for key in "${keys[@]}"; do
         bw get item $key --session $BW_SESSION | jq -r .sshKey.privateKey | ssh-add -
     done
+    import_env
 }
 ```
 
@@ -148,13 +160,11 @@ start_ssh_agent() {
 
         echo "SSH_AUTH_SOCK: $sock_file"
         if [[ -S "$sock_file" ]]; then
-            SSH_AGENT_PID=$agent_pid
-            SSH_AUTH_SOCK=$sock_file
-            export SSH_AGENT_PID SSH_AUTH_SOCK
             return
         fi
     fi
     eval "$(ssh-agent -s)"
+    systemctl --user set-environment "SSH_AGENT_PID=$SSH_AGENT_PID" "SSH_AUTH_SOCK=$SSH_AUTH_SOCK"
 }
 ```
 
