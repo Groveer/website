@@ -30,8 +30,7 @@ export default defineConfig({
     themeConfig: {
         nav: nav(),
 
-        outlineTitle: "本页目录",
-        outline: [2, 4],
+        outline: { label: "本页目录", level: [2, 4] },
 
         sidebar: {
             "/blog/": sidebarBlog(),

@@ -9,7 +9,7 @@
     "author": "groveer",
     "private": true,
     "devDependencies": {
-        "vitepress": "^1.3.2",
+        "vitepress": "^2.0.0-alpha.19",
         "vitepress-plugin-google-analytics": "^1.0.2"
     },
     "dependencies": {
