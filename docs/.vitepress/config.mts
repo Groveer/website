@@ -36,6 +36,7 @@ export default defineConfig({
             "/blog/": sidebarBlog(),
             "/linux-disk-manager/": sidebarLinuxDisk(),
             "/neovim/": sidebarNeovim(),
+            "/pi-agent/": sidebarPiAgent(),
         },
 
         editLink: {
@@ -73,6 +74,10 @@ function nav() {
                 {
                     text: "Neovim 配置",
                     link: "/neovim",
+                },
+                {
+                    text: "Pi Agent",
+                    link: "/pi-agent",
                 }
             ],
         },
@@ -197,6 +202,27 @@ function sidebarNeovim() {
         {
             text: "Neovim 与 LSP",
             link: "/neovim/lsp",
+        }
+    ];
+}
+
+function sidebarPiAgent() {
+    return [
+        {
+            text: "前言",
+            link: "/pi-agent/index",
+        },
+        {
+            text: "Pi 本体：极简 Agent Harness",
+            link: "/pi-agent/core",
+        },
+        {
+            text: "优秀插件：本地实测的 Pi 扩展",
+            link: "/pi-agent/plugins",
+        },
+        {
+            text: "Hindsight：为什么我选它作为 Agent 记忆体",
+            link: "/pi-agent/hindsight",
         }
     ];
 }
