@@ -221,7 +221,11 @@ function sidebarPiAgent() {
             link: "/pi-agent/plugins",
         },
         {
-            text: "Hindsight：为什么我选它作为 Agent 记忆体",
+            text: "Codemode：把工具调用写成脚本",
+            link: "/pi-agent/codemode",
+        },
+        {
+            text: "Hindsight：为什么选它作为 Agent 记忆体",
             link: "/pi-agent/hindsight",
         }
     ];
