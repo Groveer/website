@@ -170,21 +170,39 @@ start_ssh_agent() {
 
 这个函数 `start_ssh_agent` 会检查当前用户是否已经有运行中的 `ssh-agent` 进程。如果有，它会尝试找到对应的套接字文件并设置环境变量 `SSH_AUTH_SOCK` 和 `SSH_AGENT_PID`。如果没有找到运行中的 `ssh-agent`，它会启动一个新的 `ssh-agent` 实例，并设置相应的环境变量。
 
-当然还要 Windows 版本：
+当然还有 Windows 版本[点此下载](https://bitwarden.com/download/?app=cli&platform=windows)：
 
 ```powershell
 function ubw {
     # 获取 Bitwarden session
     $BW_SESSION = bw unlock --raw
 
+    function Get-Id {
+        param(
+            [string]$Name
+        )
+        $items = @(bw list items --search $Name --session $BW_SESSION |
+            ConvertFrom-Json)
+        $matches = @($items | Where-Object { $_.name -ceq $Name })
+        if ($matches.Count -eq 1) {
+            return $matches[0].id
+        }
+
+        return $null
+    }
+
     # 设置 API key 环境变量
     $keys = @(
-        "GEMINI_API_KEY"
+        "AI_API_KEY"
+        "CONTEXT7_API_KEY"
         "TAVILY_API_KEY"
-        "UT_KEY"
+        "EXA_API_KEY"
+        "TINYFISH_API_KEY"
+        "FIRECRAWL_API_KEY"
     )
     foreach ($key in $keys) {
-        $value = bw get notes $key --session $BW_SESSION
+        $id = Get-Id $key
+        $value = bw get notes $id --session $BW_SESSION
         Set-Item -Path "Env:$key" -Value $value
     }
 
@@ -197,7 +215,9 @@ function ubw {
         "ssh_home"
     )
     foreach ($key in $ssh_keys) {
-        $privateKey = bw get item $key --session $BW_SESSION | jq -r '.sshKey.privateKey'
+        $id = Get-Id $key
+        $privateKey = (bw get item $id --session $BW_SESSION |
+            ConvertFrom-Json).sshKey.privateKey
         $privateKey | ssh-add -
     }
 }
